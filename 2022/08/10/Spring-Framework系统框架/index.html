@@ -1,0 +1,335 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Spring Framework系统框架 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="IOC入门案例    DI入门案例 applicationContext.xml1.导入Spring的坐标 Spring-context2.配置bean 3.获取IOC容器4.获取bean 5.删除业务层中使用new的方式创建的dao对象6.提供对应的set方法 总结分析：   Bean的基础配置 bean的别名配置 bean作用范围配置spring创建的bean默认是一个单例实例。类似于new的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Framework系统框架">
+<meta property="og:url" content="http://example.com/2022/08/10/Spring-Framework%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="IOC入门案例    DI入门案例 applicationContext.xml1.导入Spring的坐标 Spring-context2.配置bean 3.获取IOC容器4.获取bean 5.删除业务层中使用new的方式创建的dao对象6.提供对应的set方法 总结分析：   Bean的基础配置 bean的别名配置 bean作用范围配置spring创建的bean默认是一个单例实例。类似于new的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+<meta property="article:published_time" content="2022-08-10T05:51:56.000Z">
+<meta property="article:modified_time" content="2022-08-10T06:01:28.890Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/08/10/Spring-Framework%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Spring Framework系统框架',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-08-10 14:01:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Spring Framework系统框架</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-08-10T05:51:56.000Z" title="Created 2022-08-10 13:51:56">2022-08-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-08-10T06:01:28.890Z" title="Updated 2022-08-10 14:01:28">2022-08-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Spring Framework系统框架"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="IOC入门案例"><a href="#IOC入门案例" class="headerlink" title="IOC入门案例"></a>IOC入门案例</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651202743017-036dd438-0a82-49cb-a738-55ff622f576f.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651202758863-4e53eeae-7e8c-4eb4-813a-a6e36ce9cea7.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651202805809-0910d615-f095-4f35-ab2e-02b3fd872d03.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651202844423-dca0c328-0b78-4048-896b-18171f06975a.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h1 id="DI入门案例"><a href="#DI入门案例" class="headerlink" title="DI入门案例"></a>DI入门案例</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651215070967-17f96dee-dd27-49ff-962a-83e55c73f676.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h2 id="applicationContext-xml"><a href="#applicationContext-xml" class="headerlink" title="applicationContext.xml"></a>applicationContext.xml</h2><h3 id="1-导入Spring的坐标-Spring-context"><a href="#1-导入Spring的坐标-Spring-context" class="headerlink" title="1.导入Spring的坐标 Spring-context"></a>1.导入Spring的坐标 Spring-context</h3><h3 id="2-配置bean"><a href="#2-配置bean" class="headerlink" title="2.配置bean"></a>2.配置bean</h3><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651215334482-d6202b06-7dda-459d-9330-6e5218625afc.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h3 id="3-获取IOC容器"><a href="#3-获取IOC容器" class="headerlink" title="3.获取IOC容器"></a>3.获取IOC容器</h3><h3 id="4-获取bean"><a href="#4-获取bean" class="headerlink" title="4.获取bean"></a>4.获取bean</h3><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651215370355-ffd617e7-64e2-4ef0-9e48-86dd1301bd0e.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h3 id="5-删除业务层中使用new的方式创建的dao对象"><a href="#5-删除业务层中使用new的方式创建的dao对象" class="headerlink" title="5.删除业务层中使用new的方式创建的dao对象"></a>5.删除业务层中使用new的方式创建的dao对象</h3><h3 id="6-提供对应的set方法"><a href="#6-提供对应的set方法" class="headerlink" title="6.提供对应的set方法"></a>6.提供对应的set方法</h3><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651215397048-67fe8930-2281-48ba-aef0-b3e606022e91.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h2 id="总结分析："><a href="#总结分析：" class="headerlink" title="总结分析："></a>总结分析：</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651215620184-c32d988c-014a-4531-af9c-73e3e85c62bd.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651215668345-09e9b8ea-e10e-4f00-8c4a-081c73809ebb.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651215740317-b7343ec4-9202-4704-901b-2517dd3f6e55.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h1 id="Bean的基础配置"><a href="#Bean的基础配置" class="headerlink" title="Bean的基础配置"></a>Bean的基础配置</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651215832646-17aa19f4-5cf2-41c0-a48d-7ef5b69010e1.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h2 id="bean的别名配置"><a href="#bean的别名配置" class="headerlink" title="bean的别名配置"></a>bean的别名配置</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651216088503-3682e6ca-7dc0-48f5-8506-277656c71814.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h2 id="bean作用范围配置"><a href="#bean作用范围配置" class="headerlink" title="bean作用范围配置"></a>bean作用范围配置</h2><p>spring创建的bean默认是一个单例实例。类似于new的对象都是一个对象，内存地址都一样</p>
+<p>用scope可以配置 是否单例</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651216267187-77b6a267-e746-44b3-9bed-272629b8180b.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651216495616-13eb10d9-d85a-4a75-a919-c27d0608ab80.png?x-oss-process=image/resize,w_638,limit_0" alt="image.png"></p>
+<p>表现层对象：servlet</p>
+<p>业务层对象：service</p>
+<p>数据层对象：dao</p>
+<p>工具对象：util</p>
+<p>封装实体的域对象：domain</p>
+<h1 id="Bean实例化（3种）"><a href="#Bean实例化（3种）" class="headerlink" title="Bean实例化（3种）"></a>Bean实例化（3种）</h1><h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651217265642-eb54828a-374a-4093-8d71-bf09d84fd553.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h2 id="静态工厂"><a href="#静态工厂" class="headerlink" title="静态工厂"></a>静态工厂</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651217812688-5528152f-91db-4b24-9a26-a860675d1d31.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p>需要在配置文件种指名工厂类和创建bean的方法</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651217860808-4e2d1c7d-bcfc-480e-bbb5-10a4ebbef402.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651217761934-19a35963-34a4-4bfe-b1d7-8131102a2ff2.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h2 id="实例工厂与FactoryBean"><a href="#实例工厂与FactoryBean" class="headerlink" title="实例工厂与FactoryBean"></a>实例工厂与FactoryBean</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651224233421-1e2bab0f-d0dd-40ad-a9d7-d39f2a0449e9.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651224110078-8ccc90ce-c30e-4b6c-8ace-466745acc58e.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651224176364-c8fd9777-3dff-475a-b376-8a1c53aadd65.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651223962922-9f0ef966-f215-4353-b944-67d66f6ecded.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h2 id="FacotryBean"><a href="#FacotryBean" class="headerlink" title="FacotryBean"></a>FacotryBean</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651224699863-8fc6e60f-967c-4bbb-b8aa-86b429001d3e.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651224552263-f7f2043c-d944-492f-a914-c701ceec2f8e.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651224515619-046c6a49-be19-4b11-b1eb-82bde437bc2e.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651224564833-033a2299-2a84-41d8-934a-c5338c03be43.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h1 id="bean的生命周期"><a href="#bean的生命周期" class="headerlink" title="bean的生命周期"></a>bean的生命周期</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651224823619-94f68dea-5f85-457e-b3a8-5ee1347031cb.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651226289445-26bd3020-28ed-429f-b4bf-325c8b6ff465.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20220810135637098.png" alt="image-20220810135637098"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651226376908-e2a0ee22-28af-4f1d-8ff3-b5330e76746e.png?x-oss-process=image/resize,w_418,limit_0" alt="image.png">、</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651226389016-f7e09a89-bb38-4558-924d-58ba0d719e92.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651226477068-e1324437-08fd-463c-9826-d6f810d268ad.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20220810135710908.png" alt="image-20220810135710908"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651676550810-742f1fe7-d75e-4138-866f-2d8742364d7c.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651677373158-cb315436-26a4-40d7-b5a4-678482bedfec.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651677390085-767738db-6e53-4c23-8777-4e82f4ec4284.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651677416238-c5407068-5c7b-4dc0-8f16-787decd2f02a.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651677591726-8c9eeaa1-5ec6-47dc-8741-a16884b3658d.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651678026603-f22ee6bb-63ae-421a-8071-b081d17091d8.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h1 id="依赖自动装配"><a href="#依赖自动装配" class="headerlink" title="依赖自动装配"></a>依赖自动装配</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651678172189-b8e326e0-6d9c-431c-a375-04528fba926e.png" alt="img"></p>
+<p><img src="C:\Users\A\AppData\Roaming\Typora\typora-user-images\image-20220810135749256.png" alt="image-20220810135749256"></p>
+<h1 id="加载Properties文件"><a href="#加载Properties文件" class="headerlink" title="加载Properties文件"></a>加载Properties文件</h1><p>xmlns:context&#x3D;”<a target="_blank" rel="noopener" href="http://www.springframework.org/schema/context&quot;">http://www.springframework.org/schema/context&quot;</a><br>xsi:schemaLocation&#x3D;”<br>    <a target="_blank" rel="noopener" href="http://www.springframework.org/schema/context">http://www.springframework.org/schema/context</a><br>    <a target="_blank" rel="noopener" href="http://www.springframework.org/schema/context/spring-context.xsd">http://www.springframework.org/schema/context/spring-context.xsd</a><br>“</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651731013475-eaaeb1a6-583c-421d-8ee2-29c0b2156a19.png?x-oss-process=image/resize,w_825,limit_0" alt="image.png"></p>
+<h2 id="application-context-xml配置文件"><a href="#application-context-xml配置文件" class="headerlink" title="application-context.xml配置文件"></a>application-context.xml配置文件</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651731422691-6232387d-5389-414f-ba6b-881525c3a639.png" alt="img"></p>
+<h2 id="jdbc-properties文件"><a href="#jdbc-properties文件" class="headerlink" title="jdbc.properties文件"></a>jdbc.properties文件</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651731616341-05c181b2-e4bc-4113-b13a-41324ad85d02.png" alt="img"></p>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p>1：system-properties-mode&#x3D;”NEVER” 就不会和系统冲突，系统优先级更高</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651731797910-cc0bf8d8-2031-49fc-8415-0fc998e85ce1.png" alt="img"></p>
+<p>2：读取当前工程中多个properties文件</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651732023889-556e5ca6-a2de-4ab9-b829-c48215fe60a8.png" alt="img"></p>
+<p>3：读取当前工程中自己设置的properties文件以及加载的jar包中的properties文件</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651732101582-1711fbb2-b779-4894-a926-0d2c2e57ae3b.png" alt="img"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651732355766-7a3e0c78-e0e0-4940-8985-5d03f10b602a.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651731599503-723fc041-8ebf-464c-a001-f8b00ae9a2f4.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651732315023-dc353d08-1021-4fe6-95f9-9f024192571b.png" alt="img"></p>
+<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651732959702-52e660ec-b285-4186-b86e-a595982afacc.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651732995756-693f2800-2991-446d-a171-8a22766ceb11.png" alt="img"></p>
+<p>按照bean类型获取bean只能对应一个，否则会报错</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651735810016-312c5654-5eeb-484f-94ee-0dabc8709d27.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651735891233-abf5e892-93f1-4bc4-ac87-dbd585810acf.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651735905296-fbdf463f-829c-49cd-aa77-ed261266bf06.png" alt="img"></p>
+<h1 id="核心容器总结"><a href="#核心容器总结" class="headerlink" title="核心容器总结"></a>核心容器总结</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651736298363-4849d41a-027a-4f6d-86fe-128789c527f6.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651736433502-13420aa9-7031-4f9d-ac7f-d97ad9c7911c.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651736460458-b009ac59-3656-461a-be2a-84a105ffbca3.png" alt="img"></p>
+<h1 id="注解开发"><a href="#注解开发" class="headerlink" title="注解开发"></a>注解开发</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1：@Component</span><br><span class="line">    代替Spring-application.xml核心配置文件中的<span class="tag">&lt;<span class="name">bean</span>&gt;</span>标签中的类</span><br><span class="line"></span><br><span class="line">2：@Controller、@Service、@Repository是@Component的衍生注解</span><br><span class="line">   </span><br><span class="line">   @Contorller：用于表现层bean定义</span><br><span class="line">   @Service：用于业务层bean定义</span><br><span class="line">   @Repository：用于数据层bean定义</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651904958771-8e441d1e-6ba7-49cb-8530-0a4130faa35d.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651905061995-dd6a91a7-b563-424a-859a-710d8fd6269f.png" alt="img"></p>
+<p>Spring3.0版本之后支持了纯注解开发，使用java类代替配置文件，开启了Spring快速开发的模式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在一个类中，</span><br><span class="line">@Configuration：表示这个类代替了application.xml配置</span><br><span class="line">@ComponentScan(&#123;&quot;&quot;,&quot;&quot;&#125;):表示<span class="tag">&lt;<span class="name">context:component-scan</span>&gt;</span>扫描的依赖包</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651905496304-5a77cb26-05dc-4c3c-a5c1-4f08301e228b.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651905998586-1cd42e67-fa2d-4a80-bf06-3627a0df1416.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651906121105-e2788291-f9be-4e3e-ae7d-fd17a55e50ac.png" alt="img"></p>
+<h1 id="注解开发bean作用范围和生命周期"><a href="#注解开发bean作用范围和生命周期" class="headerlink" title="注解开发bean作用范围和生命周期"></a>注解开发bean作用范围和生命周期</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Scope(&quot;singleton&quot;)：表示创建的bean是单例模式的</span><br><span class="line">@Scpoe(&quot;prototype&quot;): 表示创建的bean不是单例的</span><br><span class="line"></span><br><span class="line">@PostConstruct: 构造方法后</span><br><span class="line">@PreDestroy: 销毁前</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651906252632-b739308e-df77-40c6-be83-33ccbe7df792.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651906536234-f7168e27-2453-49ba-a01b-45c45bbf8229.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651906556609-f8e10b32-e9e2-4098-bc76-1660d43d1617.png" alt="img"></p>
+<h1 id="注解开发依赖注入"><a href="#注解开发依赖注入" class="headerlink" title="注解开发依赖注入"></a>注解开发依赖注入</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651910913809-7378b6f8-44f1-4ea9-8ae3-8877953e8470.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651916502111-6f24416b-f82d-42c8-940a-4bc4acd89307.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651916813217-2ef3f800-0c45-4861-97b0-596e8338d5c1.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651916973082-de3b513c-2bd7-4d50-b0fc-2a904f3b932a.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651917153532-d046f20f-2c09-453f-8498-6052062beada.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651917171556-ed1d4d84-f2fb-42f1-99ae-4a9ab05b3120.png" alt="img"></p>
+<h1 id="注解开发管理第三方bean"><a href="#注解开发管理第三方bean" class="headerlink" title="注解开发管理第三方bean"></a>注解开发管理第三方bean</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651936924536-bf799102-1a49-41b2-b79d-b70c9fb3412d.png" alt="img"></p>
+<p>下面是上面的优化，上面会导致配置类臃肿，所以建议需要什么配置就写一个配置类，然后使用@Import（）注解来导入给SpringConfig类</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651936988984-4ad8b2c1-d0d9-4013-a3fe-10efdde9442a.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651937170967-7bca77ba-5740-47fd-b039-6db7078ebe88.png" alt="img"></p>
+<h1 id="注解开发为第三方bean注入资源"><a href="#注解开发为第三方bean注入资源" class="headerlink" title="注解开发为第三方bean注入资源"></a>注解开发为第三方bean注入资源</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651937677291-915b37d3-c2a4-4ce9-81fe-115913f30a6c.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651937843886-ff0fcd51-996d-4e17-9689-67d58d321299.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651937914517-80dd612f-c752-499d-96aa-3da6130a9c02.png" alt="img"></p>
+<h1 id="注解开发总结"><a href="#注解开发总结" class="headerlink" title="注解开发总结"></a>注解开发总结</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1651938039077-1eb017fe-ffeb-4fd9-a544-d41cc8b0ee2a.png" alt="img"></p>
+<h1 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652151133261-9a474a6e-fa30-4b09-8cd1-7fba5e3ce92d.png" alt="img"></p>
+<p>连接点：所有方法</p>
+<p>切入点：哪些方法需要追加功能的，匹配通知的方法，叫切入点</p>
+<p>通知：各个方法共用的功能，叫通知。通知存在于通知类中。</p>
+<p>切面：切面描述的是通知共用的功能与所对应切入点的关系。在哪些切入点上执行哪些通知叫切面</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652151533449-8c75465e-38bf-491c-a973-a6c22fd93542.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652151558464-757f419d-f8bf-4416-bddb-21fa624a2925.png" alt="img"></p>
+<h1 id="AOP入门案例"><a href="#AOP入门案例" class="headerlink" title="AOP入门案例"></a>AOP入门案例</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652151763611-90780103-f14f-4357-a982-9131e05e895b.png" alt="img"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1:pom.xml中导入坐标</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652151893808-94074995-f7f7-4e89-b839-a45c90bfaaad.png" alt="img"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3:制作共性功能，通知</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652151972597-b89d9f70-e8ee-45af-9baf-c67197d1687e.png" alt="img"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">4:定义切入点</span><br><span class="line">  在通知类中，定义一个空的private方法，在其上添加注解@Pointcut(&quot;execution(返回值类型 包名.类.方法)&quot;)</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">@Pointcut(&quot;execution(void com.itheima.dao.BookDao.update())&quot;)</span><br><span class="line">private void pt()&#123;&#125;</span><br><span class="line"></span><br><span class="line">在通知方法上，使用注解@Before(&quot;pt()&quot;)表示在pt()方法指向的切入点（com.itheima.dao.BookDao.update()）之前执行。</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652152139116-8edca2d8-d6ec-40c4-9ece-fb50ead637eb.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652152379793-495c8316-fb81-4946-b82b-8165ae2ce78c.png" alt="img"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">5: 添加@Component 表示将该bean交给Spring</span><br><span class="line">   添加@Aspect 表示该为AOP切面</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652152535943-1632a931-b17a-4732-9ccd-5c96a5e92c7d.png" alt="img"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">6：在配置类中添加@EnableAspectJAutoProxy注解 </span><br><span class="line"></span><br><span class="line">@EnableAspectJAutoProxy 启动了@Aspect 中的功能</span><br><span class="line">@Aspect的功能是将切入点 通知定义好了</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652152700861-d18cf351-8a1e-4fce-9b11-0800fdea0739.png" alt="img"></p>
+<h2 id="入门案例总结"><a href="#入门案例总结" class="headerlink" title="入门案例总结"></a>入门案例总结</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652152976978-5be6a0bd-55a8-43bc-93b0-4a323935752f.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652152994023-813d9b85-4da3-44a6-befb-8b53ef361910.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652153030803-a4476fe5-e3d8-4dc8-8005-a492ca2c78f0.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652153043261-f7e12e1a-cf10-4f6b-a84c-bc5cb3f0fc2f.png" alt="img"></p>
+<h1 id="AOP工作流程"><a href="#AOP工作流程" class="headerlink" title="AOP工作流程"></a>AOP工作流程</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1: Spring容器启动</span><br><span class="line">2：读取所有切面配置中的切入点</span><br><span class="line">  （截图中黄色部分，虽然ptx()方法也做了切入点@Pointcut,但是下面并没有声明通知类型 </span><br><span class="line">   比如 @Before(&quot;方法（）&quot;)）</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652161889124-a3eb6fa9-cb74-4364-bee2-27cb41846784.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652163765056-77a98e5d-7fd2-45df-9270-8b37ab767008.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652164513264-a249d39e-66cc-4f7b-80e2-7cbdde44b1bd.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652164528012-b1b447c1-2af2-4b8c-bfbb-17c3f85e1ec5.png" alt="img"></p>
+<h1 id="AOP切入点表达式"><a href="#AOP切入点表达式" class="headerlink" title="AOP切入点表达式"></a>AOP切入点表达式</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652164717902-ad1bb35c-a898-4ab9-bc4e-0dfd851f3a86.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652165025853-a0196a49-f7e5-4f0d-b884-eeb917af93dc.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652165547517-bd780903-8c6f-4186-9370-83cd6c745000.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652166196191-45917b36-af77-48a7-88c2-5dff14089315.png" alt="img"></p>
+<h1 id="AOP通知类型"><a href="#AOP通知类型" class="headerlink" title="AOP通知类型"></a>AOP通知类型</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652166958367-678f0bd8-84e6-4695-ac1a-1c586dec3593.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652167284969-a003534e-231d-45eb-bf46-6ff3a469c44f.png" alt="img"></p>
+<p>环绕通知</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652168059586-bba9dc6e-91c6-40f3-a48a-d3524b57e738.png" alt="img"></p>
+<p>返回后通知：发生异常之后，不会运行</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652169879688-99467267-bca1-46bc-a60a-fa8b65b20ee1.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652169966645-5cca43f4-5b08-45e2-aafd-7f0681878d7d.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652170003254-fb1cb130-7733-4d1a-8420-e70ab42d48fa.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652170016141-3e3324ad-c86c-4664-93a3-6710fee2213c.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652170073210-819d0bc8-a49e-42c4-932e-5860ab564e16.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652170197177-2d0807f8-416b-4a83-b84c-eed64e17a2d9.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652170212520-e0674080-a761-4027-bc37-41d5dfa61327.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652170233926-0f5b2a2e-1bd5-41a2-8f6b-e7faf523b7e5.png" alt="img"></p>
+<p>写一个通知类的步骤</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>: <span class="meta">@Component</span></span><br><span class="line"><span class="number">2</span>: <span class="meta">@Aspect</span></span><br><span class="line">定义的一个通知类</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>: <span class="meta">@Ponitcut(&quot;execution(返回值类型 包.方法(参数))&quot;)</span></span><br><span class="line">定义的通知空方法</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>：<span class="meta">@Around(&quot;类名.通知空方法()&quot;)</span></span><br><span class="line">定义加强的通知方法</span><br><span class="line"><span class="keyword">public</span> Object <span class="title function_">runSpeed</span><span class="params">(ProceedingJoinPoint pjp)</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="type">Objection</span> <span class="variable">ret</span> <span class="operator">=</span> pjp.proceed();</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652200990320-f1ef04f4-8eb8-4524-9b04-2d09f30de21a.png" alt="img"></p>
+<h1 id="AOP通知获取数据"><a href="#AOP通知获取数据" class="headerlink" title="AOP通知获取数据"></a>AOP通知获取数据</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652201371356-b4424341-e6f4-49a1-9e35-b0168bd63888.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652280471471-56dc800f-d100-49f2-b321-f7cb451fd222.png" alt="img"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注解中的returing和形参需要保持一致</span></span><br><span class="line"><span class="meta">@AfterReturing(value = &quot;pt()&quot;,returing=&quot;ret&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturning</span><span class="params">(String ret)</span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652280538027-cf158f60-d1c1-4bdf-8d9a-89c9958ccaf8.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652280573703-b2f881c8-1487-457d-80f3-9c3e577d2ab2.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652280723836-ffe6103d-cb02-4a6f-87c7-42651ded8cef.png" alt="img"></p>
+<h1 id="案例-百度网盘密码数据兼容处理"><a href="#案例-百度网盘密码数据兼容处理" class="headerlink" title="案例-百度网盘密码数据兼容处理"></a>案例-百度网盘密码数据兼容处理</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652281490861-0904a0ec-0800-49e5-9753-1d32824cbf6e.png" alt="img"></p>
+<h1 id="AOP总结"><a href="#AOP总结" class="headerlink" title="AOP总结"></a>AOP总结</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652281619020-f283be4b-f995-45f9-8766-316a8068dca3.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652281763821-fcca8c96-c358-48ff-8dcc-e9c3dc64a94b.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652281775546-c15e7a4c-92b3-4941-b681-415e8c73a4ab.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652281833120-b71ef6a8-227e-4080-8705-62ae3b4dde8c.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652281949054-95cdc83f-88e0-465d-96e6-3a727f3a358a.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652281986922-2ac7dede-d398-4bfc-abc9-2af80649f3df.png" alt="img"></p>
+<h1 id="Spring事务简介"><a href="#Spring事务简介" class="headerlink" title="Spring事务简介"></a>Spring事务简介</h1><p>事务：可以简单理解为对一个数据进行增删改，要么成功然后数据变化，要么失败数据保持不变。</p>
+<p>不理解的，可以继续看数据库相关的讲解。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652282175918-92786875-e072-4767-9b82-30d52a683dac.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652283490455-c59a583f-572c-4311-9a3d-5c109674b28d.png" alt="img"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Spring开启事务，使用注解版本，需要三步</span><br><span class="line"><span class="number">1</span>：定义的service接口的方法，添加<span class="meta">@Transactional</span>注解</span><br><span class="line"><span class="number">2</span>：在jdbcConfig.java配置类中，设置事务管理器 DataSourseTransactionManager</span><br><span class="line"><span class="number">3</span>：在SpringConfig.java中，开启注解式事务驱动。<span class="meta">@EnableTransactionManagement</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652283342212-c9bb72b3-0012-4d2e-8222-94cb75e98ee7.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652283395092-d14b0bf0-84fc-4bd7-8c6c-aa34fb36a9af.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652283421164-f948a9cf-ad42-479f-8881-855432a42507.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652283435130-de21f75e-810d-4379-bc25-72bbffe860c5.png" alt="img"></p>
+<h1 id="Spring事务角色"><a href="#Spring事务角色" class="headerlink" title="Spring事务角色"></a>Spring事务角色</h1><p>一开始outMoney和inMoney各自有一个事务，transfer()方法也有一个事务。一共三个事务。</p>
+<p>加入spring管理之后，spring将transfer()方法的事务 管理outMoney 和 inMoney .</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652284539556-ac77da9f-960f-460f-8fa9-9f47a5e927a1.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652284838942-399ff20b-3320-48d5-b182-daa705087de0.png" alt="img"></p>
+<h1 id="事务属性"><a href="#事务属性" class="headerlink" title="事务属性"></a>事务属性</h1><p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652285207821-7e69350c-3f81-4afe-b2b3-e720d74a2965.png" alt="img"></p>
+<p>rollbackFor&#x3D;{NullPointExecption.class} 表示遇到了NullPointExection异常，会开启事务。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652286312877-a9790894-8c85-4ecc-b0db-9e7b660a8424.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652286424539-7874595a-957f-4352-a8c7-63057653a235.png" alt="img"></p>
+<p>添加了propagation&#x3D;Propagation.REQUIRES_NEW，</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652286550687-ef339541-6d55-479e-b0e0-696301623a67.png" alt="img"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/23197095/1652286644624-a70429b7-67b8-4ad7-9b84-0877e2a116c4.png" alt="img"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="http://example.com">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2022/08/10/Spring-Framework%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/">http://example.com/2022/08/10/Spring-Framework%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/08/10/%E5%BC%A0%E5%AE%BD%E7%9A%84Blog/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">张宽的Blog</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IOC%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B"><span class="toc-number">1.</span> <span class="toc-text">IOC入门案例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DI%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">DI入门案例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#applicationContext-xml"><span class="toc-number">2.1.</span> <span class="toc-text">applicationContext.xml</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%BC%E5%85%A5Spring%E7%9A%84%E5%9D%90%E6%A0%87-Spring-context"><span class="toc-number">2.1.1.</span> <span class="toc-text">1.导入Spring的坐标 Spring-context</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AEbean"><span class="toc-number">2.1.2.</span> <span class="toc-text">2.配置bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%8E%B7%E5%8F%96IOC%E5%AE%B9%E5%99%A8"><span class="toc-number">2.1.3.</span> <span class="toc-text">3.获取IOC容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%8E%B7%E5%8F%96bean"><span class="toc-number">2.1.4.</span> <span class="toc-text">4.获取bean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%A0%E9%99%A4%E4%B8%9A%E5%8A%A1%E5%B1%82%E4%B8%AD%E4%BD%BF%E7%94%A8new%E7%9A%84%E6%96%B9%E5%BC%8F%E5%88%9B%E5%BB%BA%E7%9A%84dao%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.1.5.</span> <span class="toc-text">5.删除业务层中使用new的方式创建的dao对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%8F%90%E4%BE%9B%E5%AF%B9%E5%BA%94%E7%9A%84set%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.6.</span> <span class="toc-text">6.提供对应的set方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E5%88%86%E6%9E%90%EF%BC%9A"><span class="toc-number">2.2.</span> <span class="toc-text">总结分析：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bean%E7%9A%84%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">Bean的基础配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#bean%E7%9A%84%E5%88%AB%E5%90%8D%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">bean的别名配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bean%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">bean作用范围配置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bean%E5%AE%9E%E4%BE%8B%E5%8C%96%EF%BC%883%E7%A7%8D%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">Bean实例化（3种）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">构造方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82"><span class="toc-number">4.2.</span> <span class="toc-text">静态工厂</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E5%B7%A5%E5%8E%82%E4%B8%8EFactoryBean"><span class="toc-number">4.3.</span> <span class="toc-text">实例工厂与FactoryBean</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FacotryBean"><span class="toc-number">4.4.</span> <span class="toc-text">FacotryBean</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">5.</span> <span class="toc-text">bean的生命周期</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-number">6.</span> <span class="toc-text">依赖自动装配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BDProperties%E6%96%87%E4%BB%B6"><span class="toc-number">7.</span> <span class="toc-text">加载Properties文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#application-context-xml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">7.1.</span> <span class="toc-text">application-context.xml配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jdbc-properties%E6%96%87%E4%BB%B6"><span class="toc-number">7.2.</span> <span class="toc-text">jdbc.properties文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="toc-number">7.3.</span> <span class="toc-text">注意点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.4.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8"><span class="toc-number">8.</span> <span class="toc-text">容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%AE%B9%E5%99%A8%E6%80%BB%E7%BB%93"><span class="toc-number">9.</span> <span class="toc-text">核心容器总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91"><span class="toc-number">10.</span> <span class="toc-text">注解开发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91bean%E4%BD%9C%E7%94%A8%E8%8C%83%E5%9B%B4%E5%92%8C%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">11.</span> <span class="toc-text">注解开发bean作用范围和生命周期</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="toc-number">12.</span> <span class="toc-text">注解开发依赖注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91%E7%AE%A1%E7%90%86%E7%AC%AC%E4%B8%89%E6%96%B9bean"><span class="toc-number">13.</span> <span class="toc-text">注解开发管理第三方bean</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91%E4%B8%BA%E7%AC%AC%E4%B8%89%E6%96%B9bean%E6%B3%A8%E5%85%A5%E8%B5%84%E6%BA%90"><span class="toc-number">14.</span> <span class="toc-text">注解开发为第三方bean注入资源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91%E6%80%BB%E7%BB%93"><span class="toc-number">15.</span> <span class="toc-text">注解开发总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP"><span class="toc-number">16.</span> <span class="toc-text">AOP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B"><span class="toc-number">17.</span> <span class="toc-text">AOP入门案例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93"><span class="toc-number">17.1.</span> <span class="toc-text">入门案例总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">18.</span> <span class="toc-text">AOP工作流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">19.</span> <span class="toc-text">AOP切入点表达式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B"><span class="toc-number">20.</span> <span class="toc-text">AOP通知类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP%E9%80%9A%E7%9F%A5%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">21.</span> <span class="toc-text">AOP通知获取数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-%E7%99%BE%E5%BA%A6%E7%BD%91%E7%9B%98%E5%AF%86%E7%A0%81%E6%95%B0%E6%8D%AE%E5%85%BC%E5%AE%B9%E5%A4%84%E7%90%86"><span class="toc-number">22.</span> <span class="toc-text">案例-百度网盘密码数据兼容处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AOP%E6%80%BB%E7%BB%93"><span class="toc-number">23.</span> <span class="toc-text">AOP总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring%E4%BA%8B%E5%8A%A1%E7%AE%80%E4%BB%8B"><span class="toc-number">24.</span> <span class="toc-text">Spring事务简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring%E4%BA%8B%E5%8A%A1%E8%A7%92%E8%89%B2"><span class="toc-number">25.</span> <span class="toc-text">Spring事务角色</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E5%B1%9E%E6%80%A7"><span class="toc-number">26.</span> <span class="toc-text">事务属性</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/08/10/Spring-Framework%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/" title="Spring Framework系统框架"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring Framework系统框架"/></a><div class="content"><a class="title" href="/2022/08/10/Spring-Framework%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/" title="Spring Framework系统框架">Spring Framework系统框架</a><time datetime="2022-08-10T05:51:56.000Z" title="Created 2022-08-10 13:51:56">2022-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/10/%E5%BC%A0%E5%AE%BD%E7%9A%84Blog/" title="张宽的Blog"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="张宽的Blog"/></a><div class="content"><a class="title" href="/2022/08/10/%E5%BC%A0%E5%AE%BD%E7%9A%84Blog/" title="张宽的Blog">张宽的Blog</a><time datetime="2022-08-10T05:24:10.000Z" title="Created 2022-08-10 13:24:10">2022-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/10/hello-world/" title="Hello World"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/08/10/hello-world/" title="Hello World">Hello World</a><time datetime="2022-08-10T04:24:00.730Z" title="Created 2022-08-10 12:24:00">2022-08-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
