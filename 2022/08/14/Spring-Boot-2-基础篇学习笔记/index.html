@@ -1,0 +1,1184 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Spring Boot 2 基础篇学习笔记 | JaksonBlog</title><meta name="keywords" content="博客"><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Spring Boot 2 基础篇学习笔记Spring Boot 2 运维实用篇学习笔记 01-开发环境学习要求 熟悉Spring基础熟悉Maven使用环境要求 Java8及以上Maven 3.5及以上：https:&#x2F;&#x2F;docs.spring.io&#x2F;spring-boot&#x2F;docs&#x2F;current&#x2F;reference&#x2F;html&#x2F;getting-started.html#getting-starte">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot 2 基础篇学习笔记">
+<meta property="og:url" content="http://example.com/2022/08/14/Spring-Boot-2-%E5%9F%BA%E7%A1%80%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="JaksonBlog">
+<meta property="og:description" content="Spring Boot 2 基础篇学习笔记Spring Boot 2 运维实用篇学习笔记 01-开发环境学习要求 熟悉Spring基础熟悉Maven使用环境要求 Java8及以上Maven 3.5及以上：https:&#x2F;&#x2F;docs.spring.io&#x2F;spring-boot&#x2F;docs&#x2F;current&#x2F;reference&#x2F;html&#x2F;getting-started.html#getting-starte">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://w.wallhaven.cc/full/wq/wallhaven-wqve97.png">
+<meta property="article:published_time" content="2022-08-14T12:37:25.000Z">
+<meta property="article:modified_time" content="2022-08-14T12:39:02.725Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://w.wallhaven.cc/full/wq/wallhaven-wqve97.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/08/14/Spring-Boot-2-%E5%9F%BA%E7%A1%80%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Spring Boot 2 基础篇学习笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-08-14 20:39:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="http://img.wxcha.com/m00/f0/f5/5e3999ad5a8d62188ac5ba8ca32e058f.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 连接</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 電影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情连接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://w.wallhaven.cc/full/wq/wallhaven-wqve97.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">JaksonBlog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 连接</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 電影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情连接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Spring Boot 2 基础篇学习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-14T12:37:25.000Z" title="发表于 2022-08-14 20:37:25">2022-08-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-08-14T12:39:02.725Z" title="更新于 2022-08-14 20:39:02">2022-08-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Spring Boot 2 基础篇学习笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Spring-Boot-2-基础篇学习笔记"><a href="#Spring-Boot-2-基础篇学习笔记" class="headerlink" title="Spring Boot 2 基础篇学习笔记"></a>Spring Boot 2 基础篇学习笔记</h1><p>Spring Boot 2 运维实用篇学习笔记</p>
+<p>01-开发环境<br>学习要求</p>
+<p>熟悉Spring基础<br>熟悉Maven使用<br>环境要求</p>
+<p>Java8及以上<br>Maven 3.5及以上：<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html#getting-started-system-requirements">https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html#getting-started-system-requirements</a><br>学习资料</p>
+<p>Spring Boot官网：<a target="_blank" rel="noopener" href="https://spring.io/projects/spring-boot">https://spring.io/projects/spring-boot</a><br>Spring Boot 官方文档：<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/current/reference/html/">https://docs.spring.io/spring-boot/docs/current/reference/html/</a><br>Spring Boot 中文文档：<a target="_blank" rel="noopener" href="http://felord.cn/_doc/_springboot/2.1.5.RELEASE/_book/">http://felord.cn/_doc/_springboot/2.1.5.RELEASE/_book/</a><br>视频地址：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV15b4y1a7yG?p=24&amp;share_source=copy_web">https://www.bilibili.com/video/BV15b4y1a7yG?p=24&amp;share_source=copy_web</a><br>源码地址：GitHub Gitee<br>02-内容介绍<br>基础篇<br>Java基础语法<br>Spring与SpringMVC<br>    知道Spring是用来管理bean，能够基于Restful实现页面请求交互功能<br>Mybatis与Mybatis-Plus<br>    基于Mybatis和MybatisPlus能够开发出包含基础CRUD功能的标准Dao模块<br>数据库MySQL<br>    能够读懂基础CRUD功能的SQL语句<br>服务器<br>    知道服务器与web工程的关系，熟悉web服务器的基础配置<br>maven<br>    知道maven的依赖关系，知道什么是依赖范围，依赖传递，排除依赖，可选依赖，继承<br>web技术（含vue，ElementUI)<br>    知道vue如何发送ajax请求，如何获取响应数据，如何进行数据模型双向绑定</p>
+<p>03-SpringBoot入门案例（Idea联网版）<br>SpringBoot是由Pivotal团队提供的全新框架，其设计目的是用来简化Spring应用的初始搭建以及开发过程<br>①：创建新模块，选择Spring Initializr，并配置模块相关基础信息</p>
+<p>②：选择当前模块需要使用的技术集</p>
+<p>③：开发控制器类</p>
+<p>&#x2F;&#x2F;Rest 模式<br>@RestController<br>@RequestMapping(“&#x2F;books”)<br>public class BookController {<br>    @GetMapping<br>    public String getById() {<br>        System.out.println(“springboot is running…”);<br>        return “springboot is running…”;<br>    }<br>}</p>
+<p>④：运行自动生成的Application类</p>
+<p>⑤：打开浏览器访问url地址为：<a target="_blank" rel="noopener" href="http://localhost:8080/books">http://localhost:8080/books</a></p>
+<p>最简SpringBoot程序所包含的基础文件 (pom.xml文件 和 Application类 )<br>pom.xml文件<br><?xml version="1.0" encoding="UTF-8"?><br><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"><br>    <modelVersion>4.0.0</modelVersion><br>    <parent><br>        <groupId>org.springframework.boot</groupId><br>        <artifactId>spring-boot-starter-parent</artifactId><br>        <version>2.5.6</version><br>    </parent><br>    <groupId>com.example</groupId><br>    <artifactId>springboot-01-quickstart</artifactId><br>    <version>0.0.1-SNAPSHOT</version><br>    <dependencies><br>        <dependency><br>            <groupId>org.springframework.boot</groupId><br>            <artifactId>spring-boot-starter-web</artifactId><br>        </dependency><br>        <dependency><br>            <groupId>org.springframework.boot</groupId><br>            <artifactId>spring-boot-starter-test</artifactId><br>            <scope>test</scope><br>        </dependency><br>    </dependencies><br></project></p>
+<p>Application类<br>@SpringBootApplication<br>public class Springboot0101QuickstartApplication {</p>
+<pre><code>public static void main(String[] args) &#123;
+    SpringApplication.run(Springboot0101QuickstartApplication.class, args);
+&#125;
+</code></pre>
+<p>}</p>
+<p>Spring程序与SpringBoot程序对比</p>
+<p>注意: 基于idea开发SpringBoot程序需要确保联网且能够加载到程序框架结构<br>小结:</p>
+<p>开发SpringBoot程序可以根据向导进行联网快速制作<br>SpringBoot程序需要基于JDK8进行制作<br>SpringBoot程序中需要使用何种功能通过勾选选择技术<br>运行SpringBoot程序通过运行Application程序入口进行<br>04-SpringBoot入门案例（官网创建版）<br>基于SpringBoot官网创建项目，地址：<a target="_blank" rel="noopener" href="https://start.spring.io/">https://start.spring.io/</a></p>
+<p>小结:</p>
+<p>打开SpringBoot官网，选择Quickstart Your Project<br>创建工程，并保存项目<br>解压项目，通过IDE导入项目<br>05-SpringBoot入门案例（阿里云版）<br>基于阿里云创建项目，地址：<a target="_blank" rel="noopener" href="https://start.aliyun.com/">https://start.aliyun.com</a></p>
+<p>注意事项:</p>
+<p>阿里云提供的坐标版本较低，如果需要使用高版本，进入工程后手工切换SpringBoot版本<br>阿里云提供的工程模板与Spring官网提供的工程模板略有不同<br>小结:</p>
+<p>选择start来源为自定义URL<br>输入阿里云start地址<br>创建项目<br>06-SpringBoot入门案例（手工制作版）<br>手工创建项目（手工导入坐标）</p>
+<?xml version="1.0" encoding="UTF-8"?>
+<p><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"><br>    <modelVersion>4.0.0</modelVersion></project></p>
+<pre><code>&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;2.5.6&lt;/version&gt;
+&lt;/parent&gt;
+
+&lt;groupId&gt;com.example&lt;/groupId&gt;
+&lt;artifactId&gt;springboot_01_04_quickstart&lt;/artifactId&gt;
+&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+
+
+
+<p>手工创建项目（手工制作引导类）<br>@SpringBootApplication<br>public class Application {</p>
+<pre><code>public static void main(String[] args) &#123;
+    SpringApplication.run(Application.class, args);
+&#125;
+</code></pre>
+<p>}</p>
+<p>小结:</p>
+<p>创建普通Maven工程<br>继承spring-boot-starter-parent<br>添加依赖spring-boot-starter-web<br>制作引导类Application<br>总结:</p>
+<p>创建SpringBoot工程的四种方式<br>基于Idea创建SpringBoot工程<br>基于官网创建SpringBoot工程<br>基于阿里云创建SpringBoot工程<br>手工创建Maven工程修改为SpringBoot工程<br>07-教你一招：隐藏文件或文件夹<br>.mvn;.gitignore;HELP.md;mvnw;mvnw.cmd;*.iml;</p>
+<p>2018版的做法:</p>
+<p>较新版本的做法 :</p>
+<p>小结:</p>
+<p>Idea中隐藏指定文件或指定类型文件<br>Setting → File Types → Ignored Files and Folders<br>输入要隐藏的文件名，支持*号通配符<br>回车确认添加<br>08-入门案例解析：parent</p>
+<p>parent<br><?xml version="1.0" encoding="UTF-8"?><br><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"><br>    <modelVersion>4.0.0</modelVersion><br>    <parent><br>        <groupId>org.springframework.boot</groupId><br>        <artifactId>spring-boot-starter-parent</artifactId><br>        <version>2.5.6</version><br>    </parent><br>    <groupId>com.example</groupId><br>    <artifactId>springboot-01-quickstart</artifactId><br>    <version>0.0.1-SNAPSHOT</version><br>    <dependencies><br>        <dependency><br>            <groupId>org.springframework.boot</groupId><br>            <artifactId>spring-boot-starter-web</artifactId><br>        </dependency><br>        <dependency><br>            <groupId>org.springframework.boot</groupId><br>            <artifactId>spring-boot-starter-test</artifactId><br>            <scope>test</scope><br>        </dependency><br>    </dependencies><br></project></p>
+<p>按住Ctrl点击pom.xml中的spring-boot-starter-parent，跳转到了spring-boot-starter-parent的pom.xml，xml配置如下（只摘抄了部分重点配置）：</p>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-dependencies</artifactId>
+    <version>2.5.6</version>
+  </parent>
+
+<p>按住Ctrl点击pom.xml中的spring-boot-starter-dependencies，跳转到了spring-boot-starter-dependencies的pom.xml，xml配置如下（只摘抄了部分重点配置）：</p>
+<properties>
+      <activemq.version>5.15.3</activemq.version>
+      <antlr2.version>2.7.7</antlr2.version>
+      <appengine-sdk.version>1.9.63</appengine-sdk.version>
+      <artemis.version>2.4.0</artemis.version>
+      <aspectj.version>1.8.13</aspectj.version>
+      <assertj.version>3.9.1</assertj.version>
+      <atomikos.version>4.0.6</atomikos.version>
+      <bitronix.version>2.1.4</bitronix.version>
+      <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+      <byte-buddy.version>1.7.11</byte-buddy.version>
+      ... ... ...
+</properties>
+<dependencyManagement>
+      <dependencies>
+          <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>2.0.1.RELEASE</version>
+          </dependency>
+          <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <version>2.0.1.RELEASE</version>
+          </dependency>
+          ... ... ...
+    </dependencies>
+</dependencyManagement>
+<build>
+      <pluginManagement>
+        <plugins>
+              <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+              </plugin>
+              <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${jooq.version}</version>
+              </plugin>
+              <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.0.1.RELEASE</version>
+              </plugin>
+              ... ... ...
+        </plugins>
+      </pluginManagement>
+</build>
+
+
+<p>从上面的spring-boot-starter-dependencies的pom.xml中我们可以发现，一部分坐标的版本、依赖管理、插件管理已经定义好，所以我们的SpringBoot工程继承spring-boot-starter-parent后已经具备版本锁定等配置了。所以起步依赖的作用就是进行依赖的传递。</p>
+<p>小结:</p>
+<p>开发SpringBoot程序要继承spring-boot-starter-parent<br>spring-boot-starter-parent中定义了若干个依赖管理<br>继承parent模块可以避免多个依赖使用相同技术时出现依赖版本冲突<br>继承parent的形式也可以采用引入依赖的形式实现效果<br>09-入门案例解析：starter<br>spring-boot-starter-web.pom<br>按住Ctrl点击pom.xml中的spring-boot-starter-web，跳转到了spring-boot-starter-web的pom.xml，xml配置如下（只摘抄了部分重点配置）：<br><?xml version="1.0" encoding="UTF-8"?><br><project xsi:schemalocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><br>      <modelVersion>4.0.0</modelVersion><br>      <parent><br>        <groupId>org.springframework.boot</groupId><br>        <artifactId>spring-boot-starters</artifactId><br>        <version>2.0.1.RELEASE</version><br>      </parent><br>      <groupId>org.springframework.boot</groupId><br>      <artifactId>spring-boot-starter-web</artifactId><br>      <version>2.0.1.RELEASE</version><br>      <name>Spring Boot Web Starter</name></project></p>
+<pre><code>  &lt;dependencies&gt;
+      &lt;dependency&gt;
+    		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    		&lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+    		&lt;version&gt;2.0.1.RELEASE&lt;/version&gt;
+    		&lt;scope&gt;compile&lt;/scope&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+    		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    		&lt;artifactId&gt;spring-boot-starter-json&lt;/artifactId&gt;
+    		&lt;version&gt;2.0.1.RELEASE&lt;/version&gt;
+    		&lt;scope&gt;compile&lt;/scope&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+    		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    		&lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+    		&lt;version&gt;2.0.1.RELEASE&lt;/version&gt;
+    		&lt;scope&gt;compile&lt;/scope&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+    		&lt;groupId&gt;org.hibernate.validator&lt;/groupId&gt;
+    		&lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
+    		&lt;version&gt;6.0.9.Final&lt;/version&gt;
+    		&lt;scope&gt;compile&lt;/scope&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+    		&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    		&lt;artifactId&gt;spring-web&lt;/artifactId&gt;
+    		&lt;version&gt;5.0.5.RELEASE&lt;/version&gt;
+    		&lt;scope&gt;compile&lt;/scope&gt;
+      &lt;/dependency&gt;
+      &lt;dependency&gt;
+    		&lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    		&lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+    		&lt;version&gt;5.0.5.RELEASE&lt;/version&gt;
+    		&lt;scope&gt;compile&lt;/scope&gt;
+      &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+</code></pre>
+
+
+
+<p>从上面的spring-boot-starter-web的pom.xml中我们可以发现，spring-boot-starter-web就是将web开发要使用的spring-web、spring-webmvc等坐标进行了“打包”，这样我们的工程只要引入spring-boot-starter-web起步依赖的坐标就可以进行web开发了，同样体现了依赖传递的作用。</p>
+<p>starter<br>SpringBoot中常见项目名称，定义了当前项目使用的所有依赖坐标，以达到减少依赖配置的目的<br>parent<br>所有SpringBoot项目要继承的项目，定义了若干个坐标版本号（依赖管理，而非依赖），以达到减少依赖冲突的目的<br>spring-boot-starter-parent各版本间存在着诸多坐标版本不同<br>实际开发<br>使用任意坐标时，仅书写GAV(groupId, artifactId, version)中的G和A，V由SpringBoot提供，除非SpringBoot未提供对应版本V<br>如发生坐标错误，再指定Version（要小心版本冲突）<br>小结:</p>
+<p>开发SpringBoot程序需要导入坐标时通常导入对应的starter<br>每个不同的starter根据功能不同，通常包含多个依赖坐标<br>使用starter可以实现快速配置的效果，达到简化配置的目的<br>10-入门案例解析：引导类<br>启动方式<br>@SpringBootApplication<br>public class Springboot0101QuickstartApplication {</p>
+<pre><code>public static void main(String[] args) &#123;
+    ConfigurableApplicationContext ctx = SpringApplication.run(Springboot0101QuickstartApplication.class, args);
+    //获取bean对象
+    BookController bean = ctx.getBean(BookController.class);
+    System.out.println(&quot;bean======&gt;&quot; + bean);
+&#125;
+</code></pre>
+<p>}</p>
+<p>SpringBoot的引导类是Boot工程的执行入口，运行main方法就可以启动项目<br>SpringBoot工程运行后初始化Spring容器，扫描引导类所在包加载bean<br>小结:</p>
+<p>SpringBoot工程提供引导类用来启动程序<br>SpringBoot工程启动后创建并初始化Spring容器<br>11-入门案例：辅助功能<br>辅助功能 内嵌tomcat</p>
+<p>使用maven依赖管理变更起步依赖项<br>    <dependencies><br>        <dependency><br>            <groupId>org.springframework.boot</groupId><br>            <artifactId>spring-boot-starter-web</artifactId><br>            <!--web 起步依赖环境中，排除 Tomcat 起步依赖 --><br>            <exclusions><br>                <exclusion><br>                    <groupId>org.springframework.boot</groupId><br>                    <artifactId>spring-boot-starter-tomcat</artifactId><br>                </exclusion><br>            </exclusions><br>        </dependency><br>        <!-- 添加 Jetty 起步依赖，版本由 SpringBoot 的 starter 控制 --><br>        <dependency><br>            <groupId>org.springframework.boot</groupId><br>            <artifactId>spring-boot-starter-jetty</artifactId><br>        </dependency><br>        <dependency><br>            <groupId>org.springframework.boot</groupId><br>            <artifactId>spring-boot-starter-test</artifactId><br>            <scope>test</scope><br>        </dependency><br>    </dependencies></p>
+<p>Jetty比Tomcat更轻量级，可扩展性更强（相较于Tomcat），谷歌应用引擎（GAE）已经全面切换为Jetty<br>内置服务器<br>tomcat(默认) apache出品，粉丝多，应用面广，负载了若干较重的组件<br>jetty 更轻量级，负载性能远不及tomcat<br>undertow undertow，负载性能勉强跑赢tomcat<br>小结:</p>
+<p>内嵌Tomcat服务器是SpringBoot辅助功能之一<br>内嵌Tomcat工作原理是将Tomcat服务器作为对象运行，并将该对象交给Spring容器管理<br>变更内嵌服务器思想是去除现有服务器，添加全新的服务器<br>总结:<br>入门案例（4种方式）<br>SpringBoot概述<br>parent<br>starter<br>引导类<br>辅助功能（内嵌tomcat）<br>[补]知识加油站-01-REST风格简介<br>什么是 rest ：</p>
+<p>REST（Representational State Transfer）表现形式状态转换</p>
+<p>传统风格资源描述形式<br><a target="_blank" rel="noopener" href="http://localhost/user/getById?id=1">http://localhost/user/getById?id=1</a> (得到id为1的用户)<br><a target="_blank" rel="noopener" href="http://localhost/user/saveUser">http://localhost/user/saveUser</a> (保存用户)</p>
+<p>REST风格描述形式<br><a target="_blank" rel="noopener" href="http://localhost/user/1">http://localhost/user/1</a> (得到id为1的用户)<br><a target="_blank" rel="noopener" href="http://localhost/user">http://localhost/user</a> (保存用户)</p>
+<p>优点:</p>
+<p>隐藏资源的访问行为， 无法通过地址得知对资源是何种操作<br>书写简化<br>按照REST风格访问资源时使用行为动作区分对资源进行了何种操作</p>
+<p>GET 用来获取资源，POST 用来新建资源，PUT 用来更新资源，DELETE 用来删除资源</p>
+<p><a target="_blank" rel="noopener" href="http://localhost/users">http://localhost/users</a> 查询全部用户信息 GET (查询)<br><a target="_blank" rel="noopener" href="http://localhost/users/1">http://localhost/users/1</a> 查询指定用户信息 GET (查询)<br><a target="_blank" rel="noopener" href="http://localhost/users">http://localhost/users</a> 添加用户信息 POST (新增&#x2F;保存)<br><a target="_blank" rel="noopener" href="http://localhost/users">http://localhost/users</a> 修改用户信息 PUT (修改&#x2F;更新)<br><a target="_blank" rel="noopener" href="http://localhost/users/1">http://localhost/users/1</a> 删除用户信息 DELETE (删除)<br>注意:</p>
+<p>上述行为是约定方式，约定不是规范，可以打破，所以称REST风格，而不是REST规范<br>描述模块的名称通常使用复数，也就是加s的格式描述，表示此类资源,而非单个资源，例如: users、 books、 accounts…</p>
+<p>根据REST风格对资源进行访问称为RESTful</p>
+<p>小结：</p>
+<p>REST<br>动作4个<br>RESTful<br>[补]知识加油站-02-RESTful入门案例<br>步骤:</p>
+<p>①:设定http请求动作(动词)</p>
+<p>使用 @RequestMapping 注解的 method 属性声明请求的方式</p>
+<p>使用 @RequestBody 注解 获取请求体内容。直接使用得到是 key&#x3D;value&amp;key&#x3D;value…结构的数据。get 请求方式不适用。</p>
+<p>使用@ResponseBody 注解实现将 controller 方法返回对象转换为 json 响应给客户端。</p>
+<p>@RequestMapping(value&#x3D;”&#x2F;users”,method&#x3D;RequestMethod.POST)</p>
+<p>②:设定请求参数(路径变量)</p>
+<p>使用@PathVariable 用于绑定 url 中的占位符。例如：请求 url 中 &#x2F;delete&#x2F;{id}，这个{id}就是 url 占位符。</p>
+<p>@RequestMapping</p>
+<p>@PathVariable</p>
+<p>@RequestBody @RequestParam @PathVariable</p>
+<p>[补]知识加油站-03-RESTful快速开发<br>使用 @RestController 注解开发 RESTful 风格</p>
+<p>使用 @GetMapping @PostMapping @PutMapping @DeleteMapping 简化 @RequestMapping 注解开发</p>
+<p>12-教你一招：复制模块<br>原则<br>保留工程基础结构<br>抹掉原始工程痕迹</p>
+<p>在IDEA 中点击模块管理添加模块</p>
+<p>小结:</p>
+<p>在工作空间中复制对应工程，并修改工程名称<br>删除与Idea相关配置文件，仅保留src目录与pom.xml文件<br>修改pom.xml文件中的artifactId与新工程&#x2F;模块名相同<br>删除name标签（可选）<br>保留备份工程供后期使用<br>13-属性配置方式<br>修改服务器端口</p>
+<p>SpringBoot默认配置文件application.properties，通过键值对配置对应属性<br>修改配置<br>修改服务器端口</p>
+<h1 id="服务器端口配制"><a href="#服务器端口配制" class="headerlink" title="服务器端口配制"></a>服务器端口配制</h1><p>server.port&#x3D;80<br>1<br>2<br>小结:</p>
+<p>SpringBoot默认配置文件application.properties<br>14-基础配置<br>修改配置<br>修改服务器端口<br>server.port&#x3D;80<br>关闭运行日志图标（banner）<br>spring.main.banner-mode&#x3D;off<br>设置日志相关<br>logging.level.root&#x3D;debug</p>
+<h1 id="服务器端口配置"><a href="#服务器端口配置" class="headerlink" title="服务器端口配置"></a>服务器端口配置</h1><p>server.port&#x3D;80</p>
+<h1 id="修改banner"><a href="#修改banner" class="headerlink" title="修改banner"></a>修改banner</h1><h1 id="spring-main-banner-mode-x3D-off"><a href="#spring-main-banner-mode-x3D-off" class="headerlink" title="spring.main.banner-mode&#x3D;off"></a>spring.main.banner-mode&#x3D;off</h1><h1 id="spring-banner-image-location-x3D-logo-png"><a href="#spring-banner-image-location-x3D-logo-png" class="headerlink" title="spring.banner.image.location&#x3D;logo.png"></a>spring.banner.image.location&#x3D;logo.png</h1><h1 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h1><p>logging.level.root&#x3D;info</p>
+<p>SpringBoot内置属性查询<br><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties">https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties</a><br>官方文档中参考文档第一项：Application Propertie<br>小结:</p>
+<p>SpringBoot中导入对应starter后，提供对应配置属性<br>书写SpringBoot配置采用关键字+提示形式书写<br>15-3种配置文件类型<br>配置文件格式</p>
+<p>SpringBoot提供了多种属性配置方式<br>application.properties<br>server.port&#x3D;80</p>
+<p>application.yml<br>server:<br>  port: 81</p>
+<p>application.yaml<br>server:<br>  port: 82</p>
+<p>小结:</p>
+<p>SpringBoot提供了3种配置文件的格式<br>properties（传统格式&#x2F;默认格式）<br>yml（主流格式）<br>yaml<br>16-配置文件加载优先级<br>SpringBoot配置文件加载顺序<br>application.properties &gt; application.yml &gt; application.yaml<br>常用配置文件种类<br>application.yml<br>小结:</p>
+<p>配置文件间的加载优先级<br>properties（最高）<br>yml<br>yaml（最低）<br>不同配置文件中相同配置按照加载优先级相互覆盖 (高优先级配置内容会覆盖低优先级配置内容)，不同配置文件中不同配置全部保留<br>17-教你一招：属性提示消失解决方案</p>
+<p>小结:</p>
+<p>指定SpringBoot配置文件<br>Setting → Project Structure → Facets<br>选中对应项目&#x2F;工程<br>Customize Spring Boot<br>选择配置文件<br>18-yaml数据格式<br>yaml<br>YAML（YAML Ain’t Markup Language），一种数据序列化格式<br>优点：</p>
+<p>容易阅读<br>容易与脚本语言交互<br>以数据为核心，重数据轻格式<br>YAML文件扩展名</p>
+<p>.yml（主流）<br>.yaml<br>yaml语法规则<br>基本语法<br>key: value -&gt; value 前面一定要有空格<br>大小写敏感<br>属性层级关系使用多行描述，每行结尾使用冒号结束<br>使用缩进表示层级关系，同层级左侧对齐，只允许使用空格（不允许使用Tab键）<br>属性值前面添加空格（属性名与属性值之间使用冒号+空格作为分隔）</p>
+<h1 id="表示注释"><a href="#表示注释" class="headerlink" title="表示注释"></a>表示注释</h1><p>核心规则：数据前面要加空格与冒号隔开<br>server:<br>  servlet:<br>    context-path: &#x2F;hello<br>  port: 82</p>
+<p>数据类型<br>字面值表示方式</p>
+<h1 id="字面值表示方式"><a href="#字面值表示方式" class="headerlink" title="字面值表示方式"></a>字面值表示方式</h1><p>boolean: TRUE       #TRUE,true,True,FALSE,false ， False 均可<br>float: 3.14         #6.8523015e+5 # 支持科学计数法<br>int: 123            #0b1010_0111_0100_1010_1110 # 支持二进制、八进制、十六进制</p>
+<h1 id="null-使用-表示-null"><a href="#null-使用-表示-null" class="headerlink" title="null: ~             # 使用 ~ 表示 null"></a>null: ~             # 使用 ~ 表示 null</h1><p>string: HelloWorld  # 字符串可以直接书写<br>string2: “Hello World”  # 可以使用双引号包裹特殊字符<br>date: 2018-02-17        # 日期必须使用 yyyy-MM-dd 格式<br>datetime: 2018-02-17T15:02:31+08:00   # 时间和日期之间使用 T 连接，最后使用 + 代表时区</p>
+<p>数组表示方式：在属性名书写位置的下方使用减号作为数据开始符号，每行书写一个数据，减号与数据间空格分隔</p>
+<p>subject:</p>
+<ul>
+<li>Java</li>
+<li>前端</li>
+<li>大数据</li>
+</ul>
+<p>enterprise:<br>  name: zhangsan<br>  age: 16</p>
+<p>subject2:</p>
+<ul>
+<li>Java</li>
+<li>前端</li>
+<li>大数据<br>likes: [王者荣耀,刺激战场] # 数组书写缩略格式</li>
+</ul>
+<p>users: # 对象数组格式</p>
+<ul>
+<li><p>name: Tom<br>age: 4</p>
+</li>
+<li><p>name: Jerry<br>age: 5</p>
+<h2 id="users2-对象数组格式二"><a href="#users2-对象数组格式二" class="headerlink" title="users2: # 对象数组格式二"></a>users2: # 对象数组格式二</h2><p>name: Tom</p>
+<h2 id="age-4"><a href="#age-4" class="headerlink" title="age: 4"></a>age: 4</h2><p>name: Jerry<br>age: 5</p>
+</li>
+</ul>
+<h1 id="对象数组缩略格式"><a href="#对象数组缩略格式" class="headerlink" title="对象数组缩略格式"></a>对象数组缩略格式</h1><p>users3: [ { name:Tom , age:4 } , { name:Jerry , age:5 } ]</p>
+<p>小结:</p>
+<ol>
+<li><p>yaml语法规则<br>大小写敏感<br>属性层级关系使用多行描述，每行结尾使用冒号结束<br>使用缩进表示层级关系，同层级左侧对齐，只允许使用空格（不允许使用Tab键）<br>属性值前面添加空格（属性名与属性值之间使用冒号+空格作为分隔）</p>
+<h1 id="表示注释-1"><a href="#表示注释-1" class="headerlink" title="表示注释"></a>表示注释</h1></li>
+<li><p>注意属性名冒号后面与数据之间有一个空格</p>
+</li>
+<li><p>字面值、对象数据格式、数组数据格式（略）</p>
+<p>19-读取yaml单一属性数据<br>使用@Value读取单个数据，属性名引用方式：${一级属性名.二级属性名……}</p>
+<p> @Value(“${country}”)<br> private String country1;</p>
+<p> @Value(“${user.age}”)<br> private String age1;</p>
+<p> @Value(“${likes[1]}”)<br> private String likes1;</p>
+<p> @Value(“${users[1].name}”)<br> private String name1;</p>
+<p> @GetMapping<br> public String getById() {<br> System.out.println(“springboot is running2…”);<br> System.out.println(“country1&#x3D;&gt;” + country1);<br> System.out.println(“age1&#x3D;&gt;” + age1);<br> System.out.println(“likes1&#x3D;&gt;” + likes1);<br> System.out.println(“name1&#x3D;&gt;” + name1);<br> return “springboot is running2…”;<br> }</p>
+</li>
+</ol>
+<p>小结:</p>
+<p>使用@Value配合SpEL读取单个数据<br>如果数据存在多层级，依次书写层级名称即可<br>20-yaml文件中的变量引用<br>在配置文件中可以使用属性名引用方式引用属性</p>
+<p>属性值中如果出现转移字符，需要使用双引号包裹</p>
+<p>小结:</p>
+<p>在配置文件中可以使用${属性名}方式引用属性值<br>如果属性中出现特殊字符，可以使用双引号包裹起来作为字符解析<br>21-读取yaml全部属性数据<br>封装全部数据到Environment对象<br>注意 要导这个 包<br>import org.springframework.core.env.Environment;</p>
+<p>小结:</p>
+<p>使用Environment对象封装全部配置信息<br>使用@Autowired自动装配数据到Environment对象中<br>22-读取yaml引用类型属性数据<br>自定义对象封装指定数据</p>
+<p>自定义对象封装指定数据的作用</p>
+<h1 id="创建类，用于封装下面的数据"><a href="#创建类，用于封装下面的数据" class="headerlink" title="创建类，用于封装下面的数据"></a>创建类，用于封装下面的数据</h1><h1 id="由spring帮我们去加载数据到对象中，一定要告诉spring加载这组信息"><a href="#由spring帮我们去加载数据到对象中，一定要告诉spring加载这组信息" class="headerlink" title="由spring帮我们去加载数据到对象中，一定要告诉spring加载这组信息"></a>由spring帮我们去加载数据到对象中，一定要告诉spring加载这组信息</h1><h1 id="使用时候从spring中直接获取信息使用"><a href="#使用时候从spring中直接获取信息使用" class="headerlink" title="使用时候从spring中直接获取信息使用"></a>使用时候从spring中直接获取信息使用</h1><p>datasource:<br>  driver: com.mysql.jdbc.Driver<br>  url: jdbc:mysql:&#x2F;&#x2F;localhost&#x2F;springboot_db<br>  username: root<br>  password: root666123</p>
+<p>&#x2F;&#x2F;1.定义数据模型封装yaml文件中对应的数据<br>&#x2F;&#x2F;2.定义为spring管控的bean<br>@Component<br>&#x2F;&#x2F;3.指定加载的数据<br>@ConfigurationProperties(prefix &#x3D; “datasource”)<br>public class MyDataSource {</p>
+<pre><code>private String driver;
+private String url;
+private String username;
+private String password;
+
+//省略get/set/tostring 方法
+</code></pre>
+<p>}    </p>
+<p>使用自动装配封装指定数据</p>
+<p> @Autowired<br> private MyDataSource myDataSource;</p>
+<p>输出查看</p>
+<p>System.out.println(myDataSource);</p>
+<p>小结:</p>
+<p>使用@ConfigurationProperties注解绑定配置信息到封装类中<br>封装类需要定义为Spring管理的bean，否则无法进行属性注入<br>23-SpringBoot整合JUnit<br>添加Junit的起步依赖 Spring Initializr 创建时自带</p>
+<!--测试的起步依赖-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
+
+<p>SpringBoot整合JUnit<br>@SpringBootTest<br>class Springboot07JunitApplicationTests {<br>    @Autowired<br>    private BookService bookService;<br>    @Test<br>    public void testSave(){<br>        bookService.save();<br>    }<br>}</p>
+<p>@SpringBootTest<br>名称：@SpringBootTest<br>类型：测试类注解<br>位置：测试类定义上方<br>作用：设置JUnit加载的SpringBoot启动类<br>范例：<br>@SpringBootTest<br>class Springboot05JUnitApplicationTests {}<br>1<br>2<br>小结:</p>
+<p>导入测试对应的starter<br>测试类使用@SpringBootTest修饰<br>使用自动装配的形式添加要测试的对象<br>24-整合JUnit——classes属性</p>
+<p>@SpringBootTest(classes &#x3D; Springboot04JunitApplication.class)<br>&#x2F;&#x2F;@ContextConfiguration(classes &#x3D; Springboot04JunitApplication.class)<br>class Springboot04JunitApplicationTests {<br>    &#x2F;&#x2F;1.注入你要测试的对象<br>    @Autowired<br>    private BookDao bookDao;</p>
+<pre><code>@Test
+void contextLoads() &#123;
+    //2.执行要测试的对象对应的方法
+    bookDao.save();
+    System.out.println(&quot;two...&quot;);
+&#125;
+</code></pre>
+<p>}</p>
+<p>注意:</p>
+<p>如果测试类在SpringBoot启动类的包或子包中，可以省略启动类的设置，也就是省略classes的设定<br>小结:</p>
+<p>测试类如果存在于引导类所在包或子包中无需指定引导类<br>测试类如果不存在于引导类所在的包或子包中需要通过 classes 属性指定引导类<br>25-SpringBoot整合MyBatis<br>①：创建新模块，选择Spring初始化，并配置模块相关基础信息</p>
+<p>②：选择当前模块需要使用的技术集（MyBatis、MySQL）</p>
+<p>③：设置数据源参数</p>
+<p>#DB Configuration:<br>spring:<br>  datasource:<br>    driver-class-name: com.mysql.cj.jdbc.Driver<br>    url: jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;springboot_db<br>    username: root<br>    password: 123456</p>
+<p>④：创建user表<br>在 springboot_db 数据库中创建 user 表</p>
+<hr>
+<p>– Table structure for <code>user</code></p>
+<hr>
+<p>DROP TABLE IF EXISTS <code>user</code>;<br>CREATE TABLE <code>user</code> (<br>  <code>id</code> int(11) NOT NULL AUTO_INCREMENT,<br>  <code>username</code> varchar(50) DEFAULT NULL,<br>  <code>password</code> varchar(50) DEFAULT NULL,<br>  <code>name</code> varchar(50) DEFAULT NULL,<br>  PRIMARY KEY (<code>id</code>)<br>) ENGINE&#x3D;InnoDB AUTO_INCREMENT&#x3D;10 DEFAULT CHARSET&#x3D;utf8;</p>
+<hr>
+<p>– Records of user</p>
+<hr>
+<p>INSERT INTO <code>user</code> VALUES (‘1’, ‘zhangsan’, ‘123’, ‘张三’);<br>INSERT INTO <code>user</code> VALUES (‘2’, ‘lisi’, ‘123’, ‘李四’);</p>
+<p>⑤：创建实体Bean</p>
+<p>public class User {<br>    &#x2F;&#x2F; 主键<br>    private Long id;<br>    &#x2F;&#x2F; 用户名<br>    private String username;<br>    &#x2F;&#x2F; 密码<br>    private String password;<br>    &#x2F;&#x2F; 姓名<br>    private String name;</p>
+<pre><code>//此处省略getter,setter,toString方法 .. ..
+</code></pre>
+<p>}</p>
+<p>⑥: 定义数据层接口与映射配置</p>
+<p>@Mapper<br>public interface UserDao {</p>
+<pre><code>@Select(&quot;select * from user&quot;)
+public List&lt;User&gt; getAll();
+</code></pre>
+<p>}</p>
+<p>⑦：测试类中注入dao接口，测试功能</p>
+<p>@SpringBootTest<br>class Springboot05MybatisApplicationTests {</p>
+<pre><code>@Autowired
+private UserDao userDao;
+
+@Test
+void contextLoads() &#123;
+    List&lt;User&gt; userList = userDao.getAll();
+    System.out.println(userList);
+&#125;
+</code></pre>
+<p>}</p>
+<p>⑧：运行如下</p>
+<p>[User{id&#x3D;1, username&#x3D;’zhangsan’, password&#x3D;’123’, name&#x3D;’张三’}, User{id&#x3D;2, username&#x3D;’lisi’, password&#x3D;’123’, name&#x3D;’李四’}]<br>1<br>总结:</p>
+<p>勾选MyBatis技术，也就是导入MyBatis对应的starter<br>数据库连接相关信息转换成配置<br>数据库SQL映射需要添加@Mapper被容器识别到<br>26-SpringBoot整合MyBatis常见问题处理<br>SpringBoot版本低于2.4.3(不含)，Mysql驱动版本大于8.0时，需要在url连接串中配置时区</p>
+<p>jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;springboot_db?serverTimezone&#x3D;UTC<br>1<br>或在MySQL数据库端配置时区解决此问题</p>
+<p>1.MySQL 8.X驱动强制要求设置时区</p>
+<p>修改url，添加serverTimezone设定<br>修改MySQL数据库配置（略）<br>2.驱动类过时，提醒更换为com.mysql.cj.jdbc.Driver</p>
+<p>27-SpringBoot整合MyBatisPlus</p>
+<p>①：手动添加SpringBoot整合MyBatis-Plus的坐标，可以通过mvnrepository获取</p>
+   <dependency>
+       <groupId>com.baomidou</groupId>
+       <artifactId>mybatis-plus-boot-starter</artifactId>
+       <version>3.4.3</version>
+   </dependency>
+
+<p>注意事项: 由于SpringBoot中未收录MyBatis-Plus的坐标版本，需要指定对应的Version</p>
+<p>②：定义数据层接口与映射配置，继承BaseMapper</p>
+<p>@Mapper<br>public interface UserDao extends BaseMapper<User> {</User></p>
+<p>③：其他同SpringBoot整合MyBatis<br>（略）</p>
+<p>④：测试类中注入dao接口，测试功能</p>
+<p>@SpringBootTest<br>class Springboot06MybatisPlusApplicationTests {</p>
+<pre><code>@Autowired
+private UserDao userDao;
+
+@Test
+void contextLoads() &#123;
+    List&lt;User&gt; users = userDao.selectList(null);
+    System.out.println(users);
+&#125;
+</code></pre>
+<p>}</p>
+<p>⑤: 运行如下:</p>
+<p>[User{id&#x3D;1, username&#x3D;’zhangsan’, password&#x3D;’123’, name&#x3D;’张三’}, User{id&#x3D;2, username&#x3D;’lisi’, password&#x3D;’123’, name&#x3D;’李四’}]<br>1<br>注意: 如果你的数据库表有前缀要在 application.yml 添加如下配制</p>
+<p>#设置Mp相关的配置<br>mybatis-plus:<br>  global-config:<br>    db-config:<br>      table-prefix: tbl_</p>
+<p>小结:<br>1.手工添加MyBatis-Plus对应的starter<br>2.数据层接口使用BaseMapper简化开发<br>3.需要使用的第三方技术无法通过勾选确定时，需要手工添加坐标</p>
+<p>28-SpringBoot整合Druid</p>
+<p>①: 导入Druid对应的starter</p>
+   <dependency>
+       <groupId>com.alibaba</groupId>
+       <artifactId>druid-spring-boot-starter</artifactId>
+       <version>1.2.6</version>
+   </dependency>
+
+<p>②: 指定数据源类型 (这种方式只需导入一个 Druid 的坐标)</p>
+<p>#DB Configuration:<br>spring:<br>  datasource:<br>    driver-class-name: com.mysql.cj.jdbc.Driver<br>    url: jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;springboot_db?serverTimezone&#x3D;UTC<br>    username: root<br>    password: 123456<br>    type: com.alibaba.druid.pool.DruidDataSource</p>
+<p>或者 变更Druid的配置方式(推荐) 这种方式需要导入 Druid对应的starter</p>
+<p>spring:<br>  datasource:<br>    druid:<br>      driver-class-name: com.mysql.cj.jdbc.Driver<br>      url: jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;springboot_db?serverTimezone&#x3D;UTC<br>      username: root<br>      password: 123456</p>
+<p>小结:</p>
+<p>1.整合Druid需要导入Druid对应的starter<br>2.根据Druid提供的配置方式进行配置<br>3.整合第三方技术通用方式</p>
+<p>导入对应的starter<br>根据提供的配置格式，配置非默认值对应的配置项<br>29-SSMP整合案例制作分析<br>案例效果演示:</p>
+<p>案例实现方案分析与流程解析</p>
+<ol>
+<li><p>案例实现方案分析<br>实体类开发————使用Lombok快速制作实体类<br>Dao开发————整合MyBatisPlus，制作数据层测试类<br>Service开发————基于MyBatisPlus进行增量开发，制作业务层测试类<br>Controller开发————基于Restful开发，使用PostMan测试接口功能<br>Controller开发————前后端开发协议制作<br>页面开发————基于VUE+ElementUI制作，前后端联调，页面数据处理，页面消息处理<br>列表、新增、修改、删除、分页、查询<br>项目异常处理<br>按条件查询————页面功能调整、Controller修正功能、Service修正功能</p>
+</li>
+<li><p>SSMP案例制作流程解析<br>先开发基础CRUD功能，做一层测一层<br>调通页面，确认异步提交成功后，制作所有功能<br>添加分页功能与查询功能</p>
+<p>30-模块创建</p>
+</li>
+</ol>
+<p>pom.xml</p>
+   <dependencies>
+       <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-web</artifactId>
+       </dependency>
+
+<pre><code>   &lt;dependency&gt;
+       &lt;groupId&gt;mysql&lt;/groupId&gt;
+       &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+       &lt;scope&gt;runtime&lt;/scope&gt;
+   &lt;/dependency&gt;
+
+   &lt;dependency&gt;
+       &lt;groupId&gt;com.baomidou&lt;/groupId&gt;
+       &lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;
+       &lt;version&gt;3.4.3&lt;/version&gt;
+   &lt;/dependency&gt;
+
+   &lt;dependency&gt;
+       &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+       &lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;
+       &lt;version&gt;1.2.6&lt;/version&gt;
+   &lt;/dependency&gt;
+
+   &lt;dependency&gt;
+       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+       &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+       &lt;scope&gt;test&lt;/scope&gt;
+   &lt;/dependency&gt;
+</code></pre>
+   </dependencies>
+
+
+<p>tbl_book.sql<br>DROP TABLE IF EXISTS <code>tbl_book</code>;<br>CREATE TABLE <code>tbl_book</code> (<br>  <code>id</code> int(11) NOT NULL AUTO_INCREMENT,<br>  <code>type</code> varchar(20) DEFAULT NULL,<br>  <code>name</code> varchar(50) DEFAULT NULL,<br>  <code>description</code> varchar(255) DEFAULT NULL,<br>  PRIMARY KEY (<code>id</code>)<br>) ENGINE&#x3D;InnoDB AUTO_INCREMENT&#x3D;13 DEFAULT CHARSET&#x3D;utf8;</p>
+<hr>
+<p>– Records of tbl_book</p>
+<hr>
+<p>INSERT INTO <code>tbl_book</code> VALUES (‘1’, ‘计算机理论’, ‘Spring实战第5版’, ‘Spring入门经典教程,深入理解Spring原理技术内幕’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘2’, ‘计算机理论’, ‘Spring 5核心原理与30个类手写实战’, ‘十年沉淀之作，写Spring精华思想’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘3’, ‘计算机理论’, ‘Spring 5设计模式’, ‘深入Spring源码剖析Spring源码中蕴含的10大设计模式’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘4’, ‘计算机理论’, ‘Spring MVC+ MyBatis开发从入门到项目实战’, ‘全方位解析面向Web应用的轻量级框架,带你成为Spring MVC开发高手’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘5’, ‘计算机理论’, ‘轻量级Java Web企业应用实战’, ‘源码级剖析Spring框架,适合已掌握Java基础的读者’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘6’, ‘计算机理论’, ‘Java核心技术卷|基础知识(原书第11版)’, ‘Core Java第11版，Jolt大奖获奖作品，针对Java SE9、10、 11全面更新’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘7’, ‘计算机理论’, ‘深入理解Java虚拟机’, ‘5个维度全面剖析JVM,面试知识点全覆盖’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘8’, ‘计算机理论’, ‘Java编程思想(第4版)’, ‘Java学习必读经典殿堂级著作!赢得了全球程序员的广泛赞誉’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘9’, ‘计算机理论’, ‘零基础学Java (全彩版)’, ‘零基础自学编程的入门]图书，由浅入深，详解Java语言的编程思想和核心技术’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘10’, ‘市场营销’, ‘直播就该这么做:主播高效沟通实战指南’, ‘李子柒、李佳琦、薇娅成长为网红的秘密都在书中’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘11’, ‘市场营销’, ‘直播销讲实战一本通’, ‘和秋叶一起学系列网络营销书籍’);<br>INSERT INTO <code>tbl_book</code> VALUES (‘12’, ‘市场营销’, ‘直播带货:淘宝、天猫直播从新手到高手’, ‘一本教你如何玩转直播的书， 10堂课轻松实现带货月入3W+’);</p>
+<p>小结:</p>
+<p>勾选SpringMVC与MySQL坐标<br>修改配置文件为yml格式<br>设置端口为80方便访问<br>server:<br>  port: 80</p>
+<p>1-实体类快速开发（lombok）<br>Lombok，一个Java类库，提供了一组注解，简化POJO实体类开发<br>        <!--lombok--><br>        <dependency><br>            <groupId>org.projectlombok</groupId><br>            <artifactId>lombok</artifactId><br>        </dependency></p>
+<p>lombok版本由SpringBoot提供，无需指定版本<br>常用注解：@Data<br>@Data<br>public class Book {<br>    private Integer id;<br>    private String type;<br>    private String name;<br>    private String description;<br>}</p>
+<p>为当前实体类在编译期设置对应的get&#x2F;set方法，toString方法，hashCode方法，equals方法等<br>小结:</p>
+<ol>
+<li><p>实体类制作</p>
+</li>
+<li><p>使用lombok简化开发<br>导入lombok无需指定版本，由SpringBoot提供版本<br>@Data注解</p>
+<p>32-数据层标准开发（基础CRUD）<br>导入MyBatisPlus与Druid对应的starter<br> <dependency><br>     <groupId>com.baomidou</groupId><br>     <artifactId>mybatis-plus-boot-starter</artifactId><br>     <version>3.4.3</version><br> </dependency><br><br> <dependency><br>     <groupId>com.alibaba</groupId><br>     <artifactId>druid-spring-boot-starter</artifactId><br>     <version>1.2.6</version><br> </dependency><br>配置数据源与MyBatisPlus对应的基础配置（id生成策略使用数据库自增策略）</p>
+</li>
+</ol>
+<h1 id="druid-数据源配制"><a href="#druid-数据源配制" class="headerlink" title="druid 数据源配制"></a>druid 数据源配制</h1><p>spring:<br>  datasource:<br>    druid:<br>      driver-class-name: com.mysql.cj.jdbc.Driver<br>      url: jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;springboot_db?serverTimezone&#x3D;UTC<br>      username: root<br>      password: 123456</p>
+<h1 id="mybatis-plus"><a href="#mybatis-plus" class="headerlink" title="mybatis-plus"></a>mybatis-plus</h1><p>mybatis-plus:<br>  global-config:<br>    db-config:<br>      table-prefix: tbl_<br>      id-type: auto # 主键策略</p>
+<p>继承BaseMapper并指定泛型<br>@Mapper<br>public interface BookDao extends BaseMapper<Book> {</Book></p>
+<pre><code>/**
+ * 查询一个
+ * 这是 Mybatis 开发
+ * @param id
+ * @return
+ */
+@Select(&quot;select * from tbl_book where id = #&#123;id&#125;&quot;)
+Book getById(Integer id);
+</code></pre>
+<p>}</p>
+<p>制作测试类测试结果<br>@SpringBootTest<br>public class BookDaoTestCase {</p>
+<pre><code>@Autowired
+private BookDao bookDao;
+
+@Test
+void testGetById() &#123;
+    System.out.println(bookDao.getById(1));
+    System.out.println(bookDao.selectById(1));
+&#125;
+
+@Test
+void testSave() &#123;
+    Book book = new Book();
+    book.setType(&quot;测试数据123&quot;);
+    book.setName(&quot;测试数据123&quot;);
+    book.setDescription(&quot;测试数据123&quot;);
+    bookDao.insert(book);
+&#125;
+
+@Test
+void testUpdate() &#123;
+    Book book = new Book();
+    book.setId(13);
+    book.setType(&quot;测试数据asfd&quot;);
+    book.setName(&quot;测试数据123&quot;);
+    book.setDescription(&quot;测试数据123&quot;);
+    bookDao.updateById(book);
+&#125;
+
+@Test
+void testDelete() &#123;
+    bookDao.deleteById(13);
+&#125;
+
+@Test
+void testGetAll() &#123;
+    System.out.println(bookDao.selectList(null));
+&#125;
+
+@Test
+void testGetPage() &#123;
+&#125;
+
+@Test
+void testGetBy() &#123;
+&#125;
+</code></pre>
+<p>}</p>
+<p>小结:</p>
+<p>手工导入starter坐标（2个）<br>配置数据源与MyBatisPlus对应的配置<br>开发Dao接口（继承BaseMapper）<br>制作测试类测试Dao功能是否有效<br>33-开启MP运行日志<br>为方便调试可以开启MyBatisPlus的日志</p>
+<h1 id="mybatis-plus-1"><a href="#mybatis-plus-1" class="headerlink" title="mybatis-plus"></a>mybatis-plus</h1><p>mybatis-plus:<br>  global-config:<br>    db-config:<br>      table-prefix: tbl_<br>      id-type: auto # 主键策略<br>  configuration:<br>    # 开启MyBatisPlus的日志<br>​    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl</p>
+<p>小结:</p>
+<p>使用配置方式开启日志，设置日志输出方式为标准输出</p>
+<p>34-分页<br>分页操作需要设定分页对象IPage<br>    @Test<br>    void testGetPage() {<br>        IPage page &#x3D; new Page(1, 5);<br>        bookDao.selectPage(page, null);<br>    }</p>
+<p>IPage对象中封装了分页操作中的所有数据<br>数据<br>当前页码值<br>每页数据总量<br>最大页码值<br>数据总量</p>
+<p>分页操作是在MyBatisPlus的常规操作基础上增强得到，内部是动态的拼写SQL语句，因此需要增强对应的功能，<br>使用MyBatisPlus拦截器实现</p>
+<p>@Configuration<br>public class MybatisPlusConfig {</p>
+<pre><code>@Bean
+public MybatisPlusInterceptor mybatisPlusInterceptor() &#123;
+    //1. 定义 Mp 拦截器
+    MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+    //2. 添加具体的拦截器 分页拦截器
+    interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+    return interceptor;
+&#125;
+</code></pre>
+<p>}</p>
+<p>测试<br>    @Test<br>    void testGetPage() {<br>        IPage page &#x3D; new Page(1, 5);<br>        bookDao.selectPage(page, null);<br>        System.out.println(page.getCurrent());<br>        System.out.println(page.getSize());<br>        System.out.println(page.getPages());<br>        System.out.println(page.getTotal());<br>        System.out.println(page.getRecords());<br>    }</p>
+<p>小结:</p>
+<p>使用IPage封装分页数据<br>分页操作依赖MyBatisPlus分页拦截器实现功能<br>借助MyBatisPlus日志查阅执行SQL语句<br>35-数据层标准开发（条件查询）<br>使用QueryWrapper对象封装查询条件，推荐使用LambdaQueryWrapper对象，所有查询操作封装成方法调用<br>    @Test<br>    void testGetBy2() {<br>        LambdaQueryWrapper<Book> lambdaQueryWrapper &#x3D; new LambdaQueryWrapper&lt;&gt;();<br>        lambdaQueryWrapper.like(Book::getName, “Spring”);<br>        bookDao.selectList(lambdaQueryWrapper);<br>    }</Book></p>
+<p>​    @Test<br>​    void testGetBy() {<br>​        QueryWrapper<Book> queryWrapper &#x3D; new QueryWrapper&lt;&gt;();<br>​        queryWrapper.like(“name”, “Spring”);<br>​        bookDao.selectList(queryWrapper);<br>​    }</Book></p>
+<p>支持动态拼写查询条件<br>    @Test<br>    void testGetBy2() {<br>        String name &#x3D; “1”;<br>        LambdaQueryWrapper<Book> lambdaQueryWrapper &#x3D; new LambdaQueryWrapper&lt;&gt;();<br>        &#x2F;&#x2F;if (name !&#x3D; null) lambdaQueryWrapper.like(Book::getName,name);<br>        lambdaQueryWrapper.like(Strings.isNotEmpty(name), Book::getName, name);<br>        bookDao.selectList(lambdaQueryWrapper);<br>    }</Book></p>
+<p>小结:</p>
+<p>使用QueryWrapper对象封装查询条件<br>推荐使用LambdaQueryWrapper对象<br>所有查询操作封装成方法调用<br>查询条件支持动态条件拼装<br>36-业务层标准开发（基础CRUD）<br>Service层接口定义与数据层接口定义具有较大区别，不要混用<br>selectByUserNameAndPassword(String username,String password); 数据层接口<br>login(String username,String password); Service层接口</p>
+<p>接口定义</p>
+<p>public interface BookService {</p>
+<pre><code>Boolean save(Book book);
+
+Boolean update(Book book);
+
+Boolean delete(Integer id);
+
+Book getById(Integer id);
+
+List&lt;Book&gt; getAll();
+
+IPage&lt;Book&gt; getPage(int currentPage,int pageSize);
+</code></pre>
+<p>}</p>
+<p>实现类定义<br>@Service<br>public class BookServiceImpl implements BookService {</p>
+<pre><code>@Autowired
+private BookDao bookDao;
+
+@Override
+public Boolean save(Book book) &#123;
+    return bookDao.insert(book) &gt; 0;
+&#125;
+
+@Override
+public Boolean update(Book book) &#123;
+    return bookDao.updateById(book) &gt; 0;
+&#125;
+
+@Override
+public Boolean delete(Integer id) &#123;
+    return bookDao.deleteById(id) &gt; 0;
+&#125;
+
+@Override
+public Book getById(Integer id) &#123;
+    return bookDao.selectById(id);
+&#125;
+
+@Override
+public List&lt;Book&gt; getAll() &#123;
+    return bookDao.selectList(null);
+&#125;
+
+@Override
+public IPage&lt;Book&gt; getPage(int currentPage, int pageSize) &#123;
+    IPage page = new Page(currentPage, pageSize);
+    bookDao.selectPage(page, null);
+    return page;
+&#125;
+</code></pre>
+<p>}</p>
+<p>测试类定义<br>@SpringBootTest<br>public class BookServiceTestCase {</p>
+<pre><code>@Autowired
+private BookService bookService;
+
+@Test
+void testGetById() &#123;
+    System.out.println(bookService.getById(4));
+&#125;
+
+@Test
+void testSave() &#123;
+    Book book = new Book();
+    book.setType(&quot;测试数据123&quot;);
+    book.setName(&quot;测试数据123&quot;);
+    book.setDescription(&quot;测试数据123&quot;);
+    bookService.save(book);
+&#125;
+
+@Test
+void testUpdate() &#123;
+    Book book = new Book();
+    book.setId(14);
+    book.setType(&quot;测试数据asfd&quot;);
+    book.setName(&quot;测试数据123&quot;);
+    book.setDescription(&quot;测试数据123&quot;);
+    bookService.update(book);
+&#125;
+
+@Test
+void testDelete() &#123;
+    bookService.delete(14);
+&#125;
+
+@Test
+void testGetAll() &#123;
+    System.out.println(bookService.getAll());
+&#125;
+
+@Test
+void testGetPage() &#123;
+    IPage&lt;Book&gt; page = bookService.getPage(2, 5);
+    System.out.println(page.getCurrent());
+    System.out.println(page.getSize());
+    System.out.println(page.getPages());
+    System.out.println(page.getTotal());
+    System.out.println(page.getRecords());
+&#125;
+</code></pre>
+<p>}</p>
+<p>小结:</p>
+<p>Service接口名称定义成业务名称，并与Dao接口名称进行区分<br>制作测试类测试Service功能是否有效<br>37-业务层快速开发（基于MyBatisPlus构建）<br>快速开发方案<br>使用MyBatisPlus提供有业务层通用接口（ISerivce）与业务层通用实现类（ServiceImpl&lt;M,T&gt;）<br>在通用类基础上做功能重载或功能追加<br>注意重载时不要覆盖原始操作，避免原始提供的功能丢失</p>
+<p>接口定义<br>public interface IBookService extends IService<Book> {<br>}</Book></p>
+<p>接口追加功能<br>public interface IBookService extends IService<Book> {</Book></p>
+<pre><code>// 追加的操作与原始操作通过名称区分，功能类似
+Boolean delete(Integer id);
+
+Boolean insert(Book book);
+
+Boolean modify(Book book);
+
+Book get(Integer id);
+</code></pre>
+<p>}</p>
+<p>实现类定义<br>@Service<br>public class BookServiceImpl extends ServiceImpl&lt;BookDao, Book&gt; implements IBookService {<br>}</p>
+<p>实现类追加功能<br>@Service<br>public class BookServiceImpl extends ServiceImpl&lt;BookDao, Book&gt; implements IBookService {</p>
+<pre><code>@Autowired
+private BookDao bookDao;
+
+public Boolean insert(Book book) &#123;
+    return bookDao.insert(book) &gt; 0;
+&#125;
+
+public Boolean modify(Book book) &#123;
+    return bookDao.updateById(book) &gt; 0;
+&#125;
+
+public Boolean delete(Integer id) &#123;
+    return bookDao.deleteById(id) &gt; 0;
+&#125;
+
+public Book get(Integer id) &#123;
+    return bookDao.selectById(id);
+&#125;
+</code></pre>
+<p>}</p>
+<p>测试类定义<br>@SpringBootTest<br>public class BookServiceTest {</p>
+<pre><code>@Autowired
+private IBookService bookService;
+
+@Test
+void testGetById() &#123;
+    System.out.println(bookService.getById(4));
+&#125;
+
+@Test
+void testSave() &#123;
+    Book book = new Book();
+    book.setType(&quot;测试数据123&quot;);
+    book.setName(&quot;测试数据123&quot;);
+    book.setDescription(&quot;测试数据123&quot;);
+    bookService.save(book);
+&#125;
+
+@Test
+void testUpdate() &#123;
+    Book book = new Book();
+    book.setId(14);
+    book.setType(&quot;===========&quot;);
+    book.setName(&quot;测试数据123&quot;);
+    book.setDescription(&quot;测试数据123&quot;);
+    bookService.updateById(book);
+&#125;
+
+@Test
+void testDelete() &#123;
+    bookService.removeById(14);
+&#125;
+
+@Test
+void testGetAll() &#123;
+    System.out.println(bookService.list());
+&#125;
+
+@Test
+void testGetPage() &#123;
+    IPage&lt;Book&gt; page = new Page&lt;&gt;(2, 5);
+    bookService.page(page);
+    System.out.println(page.getCurrent());
+    System.out.println(page.getSize());
+    System.out.println(page.getPages());
+    System.out.println(page.getTotal());
+    System.out.println(page.getRecords());
+&#125;
+</code></pre>
+<p>}</p>
+<p>小结：</p>
+<p>使用通用接口（ISerivce）快速开发Service<br>使用通用实现类（ServiceImpl&lt;M,T&gt;）快速开发ServiceImpl<br>可以在通用接口基础上做功能重载或功能追加<br>注意重载时不要覆盖原始操作，避免原始提供的功能丢失<br>38-表现层标准开发<br>基于Restful进行表现层接口开发<br>使用Postman测试表现层接口功能<br>表现层开发</p>
+<p>@RestController<br>@RequestMapping(“&#x2F;books”)<br>public class BookController {</p>
+<pre><code>@Autowired
+private IBookService bookService;
+
+@GetMapping
+public List&lt;Book&gt; getAll() &#123;
+    return bookService.list();
+&#125;
+
+@PostMapping
+public Boolean save(@RequestBody Book book) &#123;
+    return bookService.save(book);
+&#125;
+
+@PutMapping
+public Boolean update(@RequestBody Book book) &#123;
+    return bookService.modify(book);
+&#125;
+
+@DeleteMapping(&quot;&#123;id&#125;&quot;)
+public Boolean delete(@PathVariable Integer id) &#123;
+    return bookService.delete(id);
+&#125;
+
+@GetMapping(&quot;&#123;id&#125;&quot;)
+public Book getById(@PathVariable Integer id) &#123;
+    return bookService.getById(id);
+&#125;
+
+@GetMapping(&quot;&#123;currentPage&#125;/&#123;pageSize&#125;&quot;)
+public IPage&lt;Book&gt; getPage(@PathVariable Integer currentPage, @PathVariable int pageSize) &#123;
+    return bookService.getPage(currentPage, pageSize);
+&#125;
+</code></pre>
+<p>}</p>
+<p>功能测试</p>
+<p>小结:</p>
+<p>基于Restful制作表现层接口<br>新增：POST<br>删除：DELETE<br>修改：PUT<br>查询：GET<br>接收参数<br>实体数据：@RequestBody<br>路径变量：@PathVariable<br>39-表现层数据一致性处理（R对象）<br>之前的格式</p>
+<p>增加一个 data 属性，把数据全部封装到 data 里</p>
+<p>当数据为 null 可能出现的问题</p>
+<p>查询id不存在的数据，返回 null<br>查询过程中抛出异常，catch 中返回 null<br>增加 一个状态属性</p>
+<p>设计表现层返回结果的模型类，用于后端与前端进行数据格式统一，也称为前后端数据协议</p>
+<p>@Data<br>public class R {<br>    private Boolean flag;<br>    private Object data;</p>
+<pre><code>public R() &#123;
+&#125;
+
+/**
+ * 不返回数据的构造方法
+ *
+ * @param flag
+ */
+public R(Boolean flag) &#123;
+    this.flag = flag;
+&#125;
+
+/**
+ * 返回数据的构造方法
+ *
+ * @param flag
+ * @param data
+ */
+public R(Boolean flag, Object data) &#123;
+    this.flag = flag;
+    this.data = data;
+&#125;
+</code></pre>
+<p>}</p>
+<p>表现层接口统一返回值类型结果<br>@RestController<br>@RequestMapping(“&#x2F;books”)<br>public class BookController {</p>
+<pre><code>@Autowired
+private IBookService bookService;
+
+@GetMapping
+public R getAll() &#123;
+    return new R(true, bookService.list());
+&#125;
+
+@PostMapping
+public R save(@RequestBody Book book) &#123;
+    return new R(bookService.save(book));
+
+&#125;
+
+@PutMapping
+public R update(@RequestBody Book book) &#123;
+    return new R(bookService.modify(book));
+&#125;
+
+@DeleteMapping(&quot;&#123;id&#125;&quot;)
+public R delete(@PathVariable Integer id) &#123;
+    return new R(bookService.delete(id));
+&#125;
+
+@GetMapping(&quot;&#123;id&#125;&quot;)
+public R getById(@PathVariable Integer id) &#123;
+    return new R(true, bookService.getById(id));
+&#125;
+
+@GetMapping(&quot;&#123;currentPage&#125;/&#123;pageSize&#125;&quot;)
+public R getPage(@PathVariable Integer currentPage, @PathVariable int pageSize) &#123;
+    return new R(true, bookService.getPage(currentPage, pageSize));
+&#125;
+</code></pre>
+<p>}</p>
+<p>小结：</p>
+<p>设计统一的返回值结果类型便于前端开发读取数据<br>返回值结果类型可以根据需求自行设定，没有固定格式<br>返回值结果模型类用于后端与前端进行数据格式统一，也称为前<br>后端数据协议<br>40-前后端调用（axios发送异步请求）<br>使用VUE的方法时提示报错：<br>Method definition shorthands are not supported by current JavaScript version</p>
+<p>表示：该方法定义的缺陷是不支持当前的JavaScript版本，虽然可以程序可以正常运行，但是这个方法会出现红色的波浪线，很不爽</p>
+<p>解决：<br>打开 File -&gt; Settings -&gt; Languages &amp; Frameworks -&gt; Javascript<br>把JavaScript版本为ECMAScript 6就可以了</p>
+<p>前后端分离结构设计中页面归属前端服务器<br>单体工程中页面放置在resources目录下的static目录中（建议执行clean）<br>前端发送异步请求，调用后端接口<br>        &#x2F;&#x2F;钩子函数，VUE对象初始化完成后自动执行<br>        created() {<br>            &#x2F;&#x2F;调用查询全部数据的操作<br>            this.getAll();<br>        },</p>
+<pre><code>        //列表
+        getAll() &#123;
+            //发送异步请求
+            axios.get(&quot;/books&quot;).then((res)=&gt;&#123;
+                console.log(res.data);
+            &#125;)
+        &#125;,
+</code></pre>
+<p>小结：</p>
+<p>单体项目中页面放置在resources&#x2F;static目录下<br>created钩子函数用于初始化页面时发起调用<br>页面使用axios发送异步请求获取数据后确认前后端是否联通<br>41-列表功能<br>列表页<br>    &#x2F;&#x2F;列表<br>    getAll() {<br>        &#x2F;&#x2F;发送异步请求<br>        axios.get(“&#x2F;books”).then((res) &#x3D;&gt; {<br>            &#x2F;&#x2F;console.log(res.data);<br>            this.dataList &#x3D; res.data.data;<br>        })<br>    },</p>
+<p>小结：</p>
+<p>将查询数据返回到页面，利用前端数据双向绑定进行数据展示<br>42-添加功能<br>弹出添加窗口<br>&#x2F;&#x2F; 弹出添加窗口<br>handleCreate() {<br>    this.dialogFormVisible &#x3D; true;<br>},</p>
+<p>清除数据<br>   &#x2F;&#x2F;重置表单<br>   resetForm() {<br>       this.formData &#x3D; {};<br>   },</p>
+<p>在弹出添加窗口时 清除数据<br>  &#x2F;&#x2F;弹出添加窗口<br>  handleCreate() {<br>      this.dialogFormVisible &#x3D; true;<br>      this.resetForm();<br>  },</p>
+<p>发送添加请求<br>   &#x2F;&#x2F;添加<br>   handleAdd() {<br>       axios.post(“&#x2F;books”, this.formData).then((res) &#x3D;&gt; {<br>           &#x2F;&#x2F;判断当前操作是否成功<br>           if (res.data.flag) {<br>               &#x2F;&#x2F;1.关闭弹层<br>               this.dialogFormVisible &#x3D; false;<br>               this.$message.success(“添加成功”);<br>           } else {<br>               this.$message.error(“添加失败”);<br>           }<br>       }).finally(() &#x3D;&gt; {<br>           &#x2F;&#x2F;2.重新加载数据<br>           this.getAll();<br>       })<br>   },</p>
+<p>取消添加<br>  &#x2F;&#x2F;取消<br>  cancel() {<br>      &#x2F;&#x2F;1.关闭弹层<br>      this.dialogFormVisible &#x3D; false;<br>      &#x2F;&#x2F;2.提示用户<br>      this.$message.info(“当前操作取消”);<br>  },</p>
+<p>小结:</p>
+<p>请求方式使用POST调用后台对应操作<br>添加操作结束后动态刷新页面加载数据<br>根据操作结果不同，显示对应的提示信息<br>弹出添加Div时清除表单数据<br>43-删除功能<br>删除<br>  &#x2F;&#x2F; 删除<br>  handleDelete(row) {<br>      axios.delete(“&#x2F;books&#x2F;“ + row.id).then((res) &#x3D;&gt; {<br>          if (res.data.flag) {<br>              this.$message.success(“删除成功”);<br>          } else {<br>              this.$message.error(“删除失败”);<br>          }<br>      }).finally(() &#x3D;&gt; {<br>          this.getAll();<br>      });<br>  }</p>
+<p>加入确认删除对话框<br>   &#x2F;&#x2F; 删除<br>   handleDelete(row) {<br>       &#x2F;&#x2F;1. 弹出提示框<br>       this.$confirm(“些操作永久删除当前信息,是否继续?”, “提示”, {type: “info”}).then(() &#x3D;&gt; {<br>           &#x2F;&#x2F;2. 做删除业务<br>           axios.delete(“&#x2F;books&#x2F;“ + row.id).then((res) &#x3D;&gt; {<br>               &#x2F;&#x2F;判断当前操作是否成功<br>               if (res.data.flag) {<br>                   this.$message.success(“删除成功”);<br>               } else {<br>                   this.$message.error(“删除失败”);<br>               }<br>           }).finally(() &#x3D;&gt; {<br>               &#x2F;&#x2F;2.重新加载数据<br>               this.getAll();<br>           })<br>       }).catch(() &#x3D;&gt; {<br>           &#x2F;&#x2F;3. 取消删除<br>           this.$message.info(“取消操作”);<br>       });</p>
+<p>   },</p>
+<p>小结:</p>
+<p>请求方式使用Delete调用后台对应操作<br>删除操作需要传递当前行数据对应的id值到后台<br>删除操作结束后动态刷新页面加载数据<br>根据操作结果不同，显示对应的提示信息<br>删除操作前弹出提示框避免误操作<br>44修改功能（加载数据）<br>弹出修改窗口<br>  &#x2F;&#x2F;弹出编辑窗口<br>  handleUpdate(row) {<br>      axios.get(“&#x2F;books&#x2F;“ + row.id).then((res) &#x3D;&gt; {<br>          if (res.data.flag &amp;&amp; res.data.data !&#x3D; null) {<br>              &#x2F;&#x2F; 展示弹层，加载数据<br>              this.dialogFormVisible4Edit &#x3D; true;<br>              this.formData &#x3D; res.data.data;<br>          } else {<br>              this.$message.error(“数据同步失败，自动刷新”);<br>          }<br>      }).finally(() &#x3D;&gt; {<br>          &#x2F;&#x2F;重新加载数据<br>          this.getAll();<br>      });<br>  },</p>
+<p>删除消息维护<br>   &#x2F;&#x2F; 删除<br>   handleDelete(row) {<br>       &#x2F;&#x2F;1. 弹出提示框<br>       this.$confirm(“些操作永久删除当前信息,是否继续?”, “提示”, {type: “info”}).then(() &#x3D;&gt; {<br>           &#x2F;&#x2F;2. 做删除业务<br>           axios.delete(“&#x2F;books&#x2F;“ + row.id).then((res) &#x3D;&gt; {<br>               &#x2F;&#x2F;判断当前操作是否成功<br>               if (res.data.flag) {<br>                   this.$message.success(“删除成功”);<br>               } else {<br>                   this.$message.error(“数据同步失败，自动刷新”);<br>               }<br>           }).finally(() &#x3D;&gt; {<br>               &#x2F;&#x2F;2.重新加载数据<br>               this.getAll();<br>           });<br>       }).catch(() &#x3D;&gt; {<br>           &#x2F;&#x2F;3. 取消删除<br>           this.$message.info(“取消操作”);<br>       });</p>
+<p>   },</p>
+<p>小结:</p>
+<p>加载要修改数据通过传递当前行数据对应的id值到后台查询数据<br>利用前端数据双向绑定将查询到的数据进行回显<br>45-修改功能<br>修改<br>  &#x2F;&#x2F;修改<br>  handleEdit() {<br>      axios.put(“&#x2F;books”, this.formData).then((res) &#x3D;&gt; {<br>          &#x2F;&#x2F;判断当前操作是否成功<br>          if (res.data.flag) {<br>              &#x2F;&#x2F;1.关闭弹层<br>              this.dialogFormVisible4Edit &#x3D; false;<br>              this.$message.success(“修改成功”);<br>          } else {<br>              this.$message.error(“修改失败”);<br>          }<br>      }).finally(() &#x3D;&gt; {<br>          &#x2F;&#x2F;2.重新加载数据<br>          this.getAll();<br>      });<br>  },</p>
+<p>取消添加和修改<br>  &#x2F;&#x2F;取消<br>  cancel() {<br>      &#x2F;&#x2F;1.关闭弹层<br>      this.dialogFormVisible &#x3D; false;<br>      this.dialogFormVisible4Edit &#x3D; false;<br>      &#x2F;&#x2F;2.提示用户<br>      this.$message.info(“当前操作取消”);<br>  },</p>
+<p>小结:</p>
+<p>请求方式使用PUT调用后台对应操作<br>修改操作结束后动态刷新页面加载数据（同新增）<br>根据操作结果不同，显示对应的提示信息（同新增）<br>46-异常消息处理<br>业务操作成功或失败返回数据格式<br>{<br>    “flag”: true,<br>    “data”: null<br>}</p>
+<p>{<br>    “flag”: false,<br>    “data”: null<br>}<br>1</p>
+<p>后台代码BUG导致数据格式不统一性<br>{<br>    “timestamp”: “2021-11-07T12:44:29.343+00:00”,<br>    “status”: 500,<br>    “error”: “Internal Server Error”,<br>    “path”: “&#x2F;books”<br>}</p>
+<p>对异常进行统一处理，出现异常后，返回指定信息<br>@RestControllerAdvice<br>public class ProjectExceptionAdvice {</p>
+<pre><code>//拦截所有的异常信息
+@ExceptionHandler(Exception.class)
+public R doException(Exception ex) &#123;
+    // 记录日志
+    // 发送消息给运维
+    // 发送邮件给开发人员 ,ex 对象发送给开发人员
+    ex.printStackTrace();
+    return new R(false, null, &quot;系统错误，请稍后再试！&quot;);
+&#125;
+</code></pre>
+<p>}</p>
+<p>修改表现层返回结果的模型类，封装出现异常后对应的信息<br>flag：false<br>Data: null<br>消息(msg): 要显示信息<br>@Data<br>public class R{<br>    private Boolean flag;<br>    private Object data;<br>    private String msg;<br>    public R(Boolean flag,Object data,String msg){<br>        this.flag &#x3D; flag;<br>        this.data &#x3D; data;<br>        this.msg &#x3D; msg;<br>    }<br>}</p>
+<p>页面消息处理，没有传递消息加载默认消息，传递消息后加载指定消息<br>  &#x2F;&#x2F;添加<br>  handleAdd() {<br>      axios.post(“&#x2F;books”, this.formData).then((res) &#x3D;&gt; {<br>          &#x2F;&#x2F;判断当前操作是否成功<br>          if (res.data.flag) {<br>              &#x2F;&#x2F;1.关闭弹层<br>              this.dialogFormVisible &#x3D; false;<br>              this.$message.success(“添加成功”);<br>          } else {<br>              this.$message.error(res.data.msg);<br>          }<br>      }).finally(() &#x3D;&gt; {<br>          &#x2F;&#x2F;2.重新加载数据<br>          this.getAll();<br>      })<br>  },</p>
+<p>可以在表现层Controller中进行消息统一处理<br>    @PostMapping<br>    public R save(@RequestBody Book book) throws IOException {<br>        &#x2F;&#x2F;if (book.getName().equals(“123”)) throw new IOException();<br>        boolean flag &#x3D; bookService.save(book);<br>        return new R(flag, flag ? “添加成功^<em>^” : “添加失败-</em>-!”);<br>    }</p>
+<p>页面消息处理<br>  &#x2F;&#x2F;添加<br>  handleAdd() {<br>      axios.post(“&#x2F;books”, this.formData).then((res) &#x3D;&gt; {<br>          &#x2F;&#x2F;判断当前操作是否成功<br>          if (res.data.flag) {<br>              &#x2F;&#x2F;1.关闭弹层<br>              this.dialogFormVisible &#x3D; false;<br>              this.$message.success(res.data.msg);<br>          } else {<br>              this.$message.error(res.data.msg);<br>          }<br>      }).finally(() &#x3D;&gt; {<br>          &#x2F;&#x2F;2.重新加载数据<br>          this.getAll();<br>      })<br>  },</p>
+<p>1</p>
+<p>小结:</p>
+<p>使用注解@RestControllerAdvice定义SpringMVC异常处理器用来处理异常的<br>异常处理器必须被扫描加载，否则无法生效<br>表现层返回结果的模型类中添加消息属性用来传递消息到页面<br>47-分页<br>页面使用 el 分页组件添加分页功能</p>
+  <!--分页组件-->
+
+  <div class="pagination-container">
+
+
+<pre><code>  &lt;el-pagination
+          class=&quot;pagiantion&quot;
+
+          @current-change=&quot;handleCurrentChange&quot;
+
+          :current-page=&quot;pagination.currentPage&quot;
+
+          :page-size=&quot;pagination.pageSize&quot;
+
+          layout=&quot;total, prev, pager, next, jumper&quot;
+
+          :total=&quot;pagination.total&quot;&gt;
+
+  &lt;/el-pagination&gt;
+</code></pre>
+  </div>
+
+
+
+
+<p>定义分页组件需要使用的数据并将数据绑定到分页组件<br>data: {<br>    pagination: { &#x2F;&#x2F; 分页相关模型数据<br>        currentPage: 1, &#x2F;&#x2F; 当前页码<br>        pageSize: 10,	&#x2F;&#x2F; 每页显示的记录数<br>        total: 0,		&#x2F;&#x2F; 总记录数<br>    }<br>},</p>
+<p>替换查询全部功能为分页功能<br>getAll() {<br>    axios.get(“&#x2F;books&#x2F;“ + this.pagination.currentPage + “&#x2F;“ + this.pagination.pageSize).then((res) &#x3D;&gt; {});<br>},</p>
+<p>分页查询<br>使用路径参数传递分页数据或封装对象传递数据<br>    @GetMapping(“{currentPage}&#x2F;{pageSize}”)<br>    public R getPage(@PathVariable Integer currentPage, @PathVariable int pageSize) {<br>        return new R(true, bookService.getPage(currentPage, pageSize));<br>    }</p>
+<p>加载分页数据<br>     &#x2F;&#x2F;分页查询<br>     getAll() {<br>         &#x2F;&#x2F;发送异步请求<br>         axios.get(“&#x2F;books&#x2F;“ + this.pagination.currentPage + “&#x2F;“ + this.pagination.pageSize).then((res) &#x3D;&gt; {<br>             &#x2F;&#x2F;console.log(res.data);<br>             this.pagination.currentPage &#x3D; res.data.data.current;<br>             this.pagination.pageSize &#x3D; res.data.data.size;<br>             this.pagination.total &#x3D; res.data.data.total;</p>
+<pre><code>         this.dataList = res.data.data.records;
+     &#125;)
+ &#125;,
+</code></pre>
+<p>分页页码值切换<br>   &#x2F;&#x2F;切换页码<br>   handleCurrentChange(currentPage) {<br>       &#x2F;&#x2F;修改页码值为当前选中的页码值<br>       this.pagination.currentPage &#x3D; currentPage;<br>       &#x2F;&#x2F;执行查询<br>       this.getAll();<br>   },</p>
+<p>小结:</p>
+<p>使用el分页组件<br>定义分页组件绑定的数据模型<br>异步调用获取分页数据<br>分页数据页面回显<br>48-分页功能维护（删除BUG）<br>对查询结果进行校验，如果当前页码值大于最大页码值，使用最大页码值作为当前页码值重新查询<br>    @GetMapping(“{currentPage}&#x2F;{pageSize}”)<br>    public R getPage(@PathVariable Integer currentPage, @PathVariable int pageSize) {<br>        IPage<Book> page &#x3D; bookService.getPage(currentPage, pageSize);<br>        &#x2F;&#x2F; 如果当前页码值大于了总页码值，那么重新执行查询操作，使用最大页码值作为当前页码值<br>        if (currentPage &gt; page.getPages()) {<br>            page &#x3D; bookService.getPage((int) page.getPages(), pageSize);<br>        }<br>        return new R(true, page);<br>    }</Book></p>
+<p>小结:</p>
+<p>基于业务需求维护删除功能<br>49-条件查询<br>查询条件数据封装<br>单独封装<br>与分页操作混合封装<br>   pagination: {&#x2F;&#x2F;分页相关模型数据<br>       currentPage: 1,&#x2F;&#x2F;当前页码<br>       pageSize: 10,&#x2F;&#x2F;每页显示的记录数<br>       total: 0,&#x2F;&#x2F;总记录数<br>       type: “”,<br>       name: “”,<br>       description: “”<br>   }</p>
+<p>页面数据模型绑定</p>
+<div class="filter-container">
+    <el-input placeholder="图书类别" v-model="pagination.type" class="filter-item">
+    <el-input placeholder="图书名称" v-model="pagination.name" class="filter-item">
+    <el-input placeholder="图书描述" v-model="pagination.description" class="filter-item">
+    <el-button @click="getAll()" class="dalfBut">查询</el-button>
+    <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
+</el-input></el-input></el-input></div>
+
+
+<p>组织数据成为get请求发送的数据<br>   &#x2F;&#x2F;分页查询<br>   getAll() {<br>       console.log(this.pagination.type);</p>
+<pre><code>   //  /books/1/10?type=???&amp;name=???&amp;decription=?? ;
+   //1. 获取查询条件 , 拼接查询条件
+   param = &quot;?name=&quot; + this.pagination.name;
+   param += &quot;&amp;type=&quot; + this.pagination.type;
+   param += &quot;&amp;description=&quot; + this.pagination.description;
+   //console.log(&quot;-----------------&quot; + param);
+
+   //发送异步请求
+   axios.get(&quot;/books/&quot; + this.pagination.currentPage + &quot;/&quot; + this.pagination.pageSize + param).then((res) =&gt; &#123;
+       //console.log(res.data);
+       this.pagination.currentPage = res.data.data.current;
+       this.pagination.pageSize = res.data.data.size;
+       this.pagination.total = res.data.data.total;
+
+       this.dataList = res.data.data.records;
+   &#125;)
+</code></pre>
+<p>   },</p>
+<p>条件参数组织可以通过条件判定书写的更简洁<br>Controller接收参数<br>@GetMapping(“{currentPage}&#x2F;{pageSize}”)<br>public R getAll(@PathVariable int currentPage,@PathVariable int pageSize,Book book) {<br>    System.out.println(“参数&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&gt;”+book);<br>    IPage<Book> pageBook &#x3D; bookService.getPage(currentPage,pageSize);<br>    return new R(null !&#x3D; pageBook ,pageBook);<br>}</Book></p>
+<p>业务层接口功能开发<br>     &#x2F;**</p>
+<ul>
+<li>分页的条件查询<ul>
+<li></li>
+</ul>
+</li>
+<li>@param currentPage</li>
+<li>@param pageSize</li>
+<li>@param book</li>
+<li>@return<br>*&#x2F;</li>
+</ul>
+<pre><code>IPage&lt;Book&gt; getPage(Integer currentPage, int pageSize, Book book);
+
+  业务层接口实现类功能开发
+
+@Override
+public IPage&lt;Book&gt; getPage(Integer currentPage, int pageSize, Book book) &#123;
+
+    LambdaQueryWrapper&lt;Book&gt; lambdaQueryWrapper = new LambdaQueryWrapper&lt;&gt;();
+
+    lambdaQueryWrapper.like(Strings.isNotEmpty(book.getType()), Book::getType, book.getType());
+    lambdaQueryWrapper.like(Strings.isNotEmpty(book.getName()), Book::getName, book.getName());
+    lambdaQueryWrapper.like(Strings.isNotEmpty(book.getDescription()), Book::getDescription, book.getDescription());
+
+    IPage page = new Page(currentPage, pageSize);
+    bookDao.selectPage(page, lambdaQueryWrapper);
+
+    return page;
+&#125;
+</code></pre>
+<p>Controller调用业务层分页条件查询接口<br>    @GetMapping(“{currentPage}&#x2F;{pageSize}”)<br>    public R getPage(@PathVariable Integer currentPage, @PathVariable int pageSize, Book book) {</p>
+<pre><code>    // System.out.println(&quot;book=&gt;&quot; + book);
+
+    IPage&lt;Book&gt; page = bookService.getPage(currentPage, pageSize, book);
+    // 如果当前页码值大于了总页码值，那么重新执行查询操作，使用最大页码值作为当前页码值
+    if (currentPage &gt; page.getPages()) &#123;
+        page = bookService.getPage((int) page.getPages(), pageSize, book);
+    &#125;
+    return new R(true, page);
+&#125;
+</code></pre>
+<p>页面回显数据<br>   &#x2F;&#x2F;分页查询<br>   getAll() {<br>       console.log(this.pagination.type);</p>
+<pre><code>   //  /books/1/10?type=???&amp;name=???&amp;decription=?? ;
+   //1. 获取查询条件 , 拼接查询条件
+   param = &quot;?name=&quot; + this.pagination.name;
+   param += &quot;&amp;type=&quot; + this.pagination.type;
+   param += &quot;&amp;description=&quot; + this.pagination.description;
+   //console.log(&quot;-----------------&quot; + param);
+
+   //发送异步请求
+   axios.get(&quot;/books/&quot; + this.pagination.currentPage + &quot;/&quot; + this.pagination.pageSize + param).then((res) =&gt; &#123;
+       //console.log(res.data);
+       this.pagination.currentPage = res.data.data.current;
+       this.pagination.pageSize = res.data.data.size;
+       this.pagination.total = res.data.data.total;
+
+       this.dataList = res.data.data.records;
+   &#125;)
+</code></pre>
+<p>   },</p>
+<p>小结:</p>
+<p>定义查询条件数据模型（当前封装到分页数据模型中）<br>异步调用分页功能并通过请求参数传递数据到后台<br>50-基础篇完结<br>基于SpringBoot的SSMP整合案例<br>pom.xml<br>配置起步依赖<br>application.yml<br>设置数据源、端口、框架技术相关配置等<br>dao<br>继承BaseMapper、设置@Mapper<br>dao测试类<br>service<br>调用数据层接口或MyBatis-Plus提供的接口快速开发<br>service测试类<br>controller<br>基于Restful开发，使用Postman测试跑通功能<br>页面<br>放置在resources目录下的static目录中<br>总结:</p>
+<p>整合JUint<br>整合MyBatis<br>整合MyBatis-Plus<br>整合Druid<br>基于SpringBoot的SSMP整合案例<br>后续学习<br>基础篇<br>能够创建SpringBoot工程<br>基于SpringBoot实现ssm&#x2F;ssmp整合<br>实用篇<br>运维实用篇 Spring Boot 2 运维实用篇学习笔记<br>能够掌握SpringBoot程序多环境开发<br>能够基于Linux系统发布SpringBoot工程<br>能够解决线上灵活配置SpringBoot工程的需求<br>开发实用篇 实用篇<br>能够基于SpringBoot整合任意第三方技术</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/08/14/Spring-Boot-2-%E5%9F%BA%E7%A1%80%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">http://example.com/2022/08/14/Spring-Boot-2-%E5%9F%BA%E7%A1%80%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">JaksonBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://w.wallhaven.cc/full/wq/wallhaven-wqve97.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/08/14/%E7%AE%80%E5%8D%95%E7%9A%84CRUD%E6%A1%88%E4%BE%8B/"><img class="prev-cover" src="https://w.wallhaven.cc/full/z8/wallhaven-z8dg9y.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">简单的CRUD案例</div></div></a></div><div class="next-post pull-right"><a href="/2022/08/10/Spring%E9%9B%86%E6%88%90web%E7%8E%AF%E5%A2%83/"><img class="next-cover" src="https://w.wallhaven.cc/full/z8/wallhaven-z8dg9y.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Spring集成web环境</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="http://img.wxcha.com/m00/f0/f5/5e3999ad5a8d62188ac5ba8ca32e058f.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/buleOcean"><i class="fab fa-github"></i><span>关注我</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/buleOcean" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1792876074@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://buleocean.github.io/" target="_blank" title="Blog"><i class="fab fa-algolia"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到Jakson的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Boot-2-%E5%9F%BA%E7%A1%80%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">Spring Boot 2 基础篇学习笔记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%8F%A3%E9%85%8D%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">服务器端口配制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">服务器端口配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9banner"><span class="toc-number">4.</span> <span class="toc-text">修改banner</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-main-banner-mode-x3D-off"><span class="toc-number">5.</span> <span class="toc-text">spring.main.banner-mode&#x3D;off</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-banner-image-location-x3D-logo-png"><span class="toc-number">6.</span> <span class="toc-text">spring.banner.image.location&#x3D;logo.png</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A5%E5%BF%97"><span class="toc-number">7.</span> <span class="toc-text">日志</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A8%E7%A4%BA%E6%B3%A8%E9%87%8A"><span class="toc-number">8.</span> <span class="toc-text">表示注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E9%9D%A2%E5%80%BC%E8%A1%A8%E7%A4%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">9.</span> <span class="toc-text">字面值表示方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null-%E4%BD%BF%E7%94%A8-%E8%A1%A8%E7%A4%BA-null"><span class="toc-number">10.</span> <span class="toc-text">null: ~             # 使用 ~ 表示 null</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#users2-%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E6%A0%BC%E5%BC%8F%E4%BA%8C"><span class="toc-number">10.1.</span> <span class="toc-text">users2: # 对象数组格式二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#age-4"><span class="toc-number">10.2.</span> <span class="toc-text">age: 4</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E7%BC%A9%E7%95%A5%E6%A0%BC%E5%BC%8F"><span class="toc-number">11.</span> <span class="toc-text">对象数组缩略格式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A8%E7%A4%BA%E6%B3%A8%E9%87%8A-1"><span class="toc-number">12.</span> <span class="toc-text">表示注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%B1%BB%EF%BC%8C%E7%94%A8%E4%BA%8E%E5%B0%81%E8%A3%85%E4%B8%8B%E9%9D%A2%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">13.</span> <span class="toc-text">创建类，用于封装下面的数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%B1spring%E5%B8%AE%E6%88%91%E4%BB%AC%E5%8E%BB%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%88%B0%E5%AF%B9%E8%B1%A1%E4%B8%AD%EF%BC%8C%E4%B8%80%E5%AE%9A%E8%A6%81%E5%91%8A%E8%AF%89spring%E5%8A%A0%E8%BD%BD%E8%BF%99%E7%BB%84%E4%BF%A1%E6%81%AF"><span class="toc-number">14.</span> <span class="toc-text">由spring帮我们去加载数据到对象中，一定要告诉spring加载这组信息</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%97%B6%E5%80%99%E4%BB%8Espring%E4%B8%AD%E7%9B%B4%E6%8E%A5%E8%8E%B7%E5%8F%96%E4%BF%A1%E6%81%AF%E4%BD%BF%E7%94%A8"><span class="toc-number">15.</span> <span class="toc-text">使用时候从spring中直接获取信息使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#druid-%E6%95%B0%E6%8D%AE%E6%BA%90%E9%85%8D%E5%88%B6"><span class="toc-number">16.</span> <span class="toc-text">druid 数据源配制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mybatis-plus"><span class="toc-number">17.</span> <span class="toc-text">mybatis-plus</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mybatis-plus-1"><span class="toc-number">18.</span> <span class="toc-text">mybatis-plus</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/08/14/%E7%AE%80%E5%8D%95%E7%9A%84CRUD%E6%A1%88%E4%BE%8B/" title="简单的CRUD案例"><img src="https://w.wallhaven.cc/full/z8/wallhaven-z8dg9y.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="简单的CRUD案例"/></a><div class="content"><a class="title" href="/2022/08/14/%E7%AE%80%E5%8D%95%E7%9A%84CRUD%E6%A1%88%E4%BE%8B/" title="简单的CRUD案例">简单的CRUD案例</a><time datetime="2022-08-14T12:38:18.000Z" title="发表于 2022-08-14 20:38:18">2022-08-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/14/Spring-Boot-2-%E5%9F%BA%E7%A1%80%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Spring Boot 2 基础篇学习笔记"><img src="https://w.wallhaven.cc/full/wq/wallhaven-wqve97.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring Boot 2 基础篇学习笔记"/></a><div class="content"><a class="title" href="/2022/08/14/Spring-Boot-2-%E5%9F%BA%E7%A1%80%E7%AF%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Spring Boot 2 基础篇学习笔记">Spring Boot 2 基础篇学习笔记</a><time datetime="2022-08-14T12:37:25.000Z" title="发表于 2022-08-14 20:37:25">2022-08-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/10/Spring%E9%9B%86%E6%88%90web%E7%8E%AF%E5%A2%83/" title="Spring集成web环境"><img src="https://w.wallhaven.cc/full/z8/wallhaven-z8dg9y.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring集成web环境"/></a><div class="content"><a class="title" href="/2022/08/10/Spring%E9%9B%86%E6%88%90web%E7%8E%AF%E5%A2%83/" title="Spring集成web环境">Spring集成web环境</a><time datetime="2022-08-10T13:54:08.000Z" title="发表于 2022-08-10 21:54:08">2022-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/10/Spring-Framework%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/" title="Spring Framework系统框架"><img src="https://w.wallhaven.cc/full/wq/wallhaven-wqve97.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring Framework系统框架"/></a><div class="content"><a class="title" href="/2022/08/10/Spring-Framework%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6/" title="Spring Framework系统框架">Spring Framework系统框架</a><time datetime="2022-08-10T05:51:56.000Z" title="发表于 2022-08-10 13:51:56">2022-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/10/git%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/" title="Git学习日志"><img src="https://w.wallhaven.cc/full/z8/wallhaven-z8dg9y.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git学习日志"/></a><div class="content"><a class="title" href="/2022/08/10/git%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/" title="Git学习日志">Git学习日志</a><time datetime="2022-08-10T05:24:10.000Z" title="发表于 2022-08-10 13:24:10">2022-08-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By John Doe</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">很高兴观看我的Blog</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
